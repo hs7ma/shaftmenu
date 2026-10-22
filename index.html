@@ -1,0 +1,3291 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>نَـوَى — القائمة المكانية التفاعلية | NAWA 120Hz Spatial Menu</title>
+
+  <!-- Google Fonts: Tajawal, Readex Pro & Cormorant Garamond -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,600&family=Readex+Pro:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================================
+       1. PURE ZERO-RUNTIME CSS ARCHITECTURE (NO TAILWIND JS OVERHEAD)
+       ============================================================================ */
+    :root {
+      --bg-ivory: #F7F4EE;
+      --bg-sand: #EFECE4;
+      --bg-sand-hover: #E5E0D5;
+      --border-warm: #DCD5C7;
+      --ink-deep: #1F241F;
+      --ink-muted: #5E635B;
+      --ink-subtle: #7A7468;
+      --botanical-dark: #2B3529;
+      --botanical-olive: #3D4A3A;
+      --terracotta: #C65D3B;
+      --terracotta-dark: #A34828;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background-color: var(--bg-ivory);
+      color: var(--ink-deep);
+      font-family: 'Tajawal', 'Readex Pro', sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .font-editorial {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+    }
+
+    .font-arabic-display {
+      font-family: 'Readex Pro', 'Tajawal', sans-serif;
+    }
+
+    /* Ambient Gallery Atmosphere */
+    .nawa-atmosphere {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        radial-gradient(circle at 16% 12%, rgba(198, 93, 59, 0.055) 0%, transparent 45%),
+        radial-gradient(circle at 84% 26%, rgba(61, 74, 58, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 50% 85%, rgba(184, 159, 125, 0.08) 0%, transparent 55%);
+    }
+
+    /* Custom Scrollbar */
+    .nawa-scroll::-webkit-scrollbar {
+      width: 5px;
+    }
+    .nawa-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .nawa-scroll::-webkit-scrollbar-thumb {
+      background: rgba(61, 74, 58, 0.25);
+      border-radius: 999px;
+    }
+
+    /* ============================================================================
+       2. STICKY HEADER & CALIBRATION BAR
+       ============================================================================ */
+    .nawa-header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      background-color: rgba(247, 244, 238, 0.88);
+      border-bottom: 1px solid rgba(220, 213, 199, 0.85);
+    }
+
+    .header-inner {
+      max-width: 1680px;
+      margin: 0 auto;
+      padding: 0.6rem 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .brand-monogram {
+      width: 2.55rem;
+      height: 2.55rem;
+      border-radius: 50%;
+      background-color: var(--botanical-dark);
+      color: var(--bg-ivory);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(31, 36, 31, 0.14);
+      border: 1px solid rgba(61, 74, 58, 0.35);
+      flex-shrink: 0;
+    }
+
+    .brand-titles {
+      display: flex;
+      align-items: baseline;
+      gap: 0.65rem;
+    }
+
+    .brand-name-ar {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ink-deep);
+    }
+
+    .brand-name-en {
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
+      color: #6E6A61;
+      text-transform: uppercase;
+    }
+
+    .brand-subtitle {
+      margin: 0.1rem 0 0 0;
+      font-size: 0.74rem;
+      color: var(--ink-muted);
+    }
+
+    .gesture-legend {
+      display: none;
+      align-items: center;
+      gap: 0.9rem;
+      background-color: var(--bg-sand);
+      border: 1px solid var(--border-warm);
+      border-radius: 999px;
+      padding: 0.38rem 1rem;
+      font-size: 0.75rem;
+      color: var(--botanical-olive);
+    }
+
+    @media (min-width: 1280px) {
+      .gesture-legend {
+        display: flex;
+      }
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .legend-sep {
+      color: #C8C0B0;
+    }
+
+    .pulse-dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+      background-color: var(--terracotta);
+      display: inline-block;
+      animation: pingPulse 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes pingPulse {
+      0% { transform: scale(0.95); opacity: 1; }
+      70% { transform: scale(1.65); opacity: 0.25; }
+      100% { transform: scale(0.95); opacity: 1; }
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.42rem 0.85rem;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border: 1px solid var(--border-warm);
+      background-color: var(--bg-sand);
+      color: var(--botanical-dark);
+      cursor: pointer;
+      transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+    }
+
+    .pill-btn:hover {
+      background-color: var(--bg-sand-hover);
+    }
+
+    .pill-btn:active {
+      transform: scale(0.97);
+    }
+
+    .pill-btn.active-dark {
+      background-color: var(--botanical-dark);
+      color: var(--bg-ivory);
+      border-color: var(--botanical-dark);
+    }
+
+    .pill-btn.active-terracotta {
+      background-color: rgba(198, 93, 59, 0.12);
+      border-color: rgba(198, 93, 59, 0.45);
+      color: var(--terracotta-dark);
+    }
+
+    /* Calibration Drawer */
+    .calibration-drawer {
+      background-color: rgba(239, 236, 228, 0.96);
+      border-top: 1px solid var(--border-warm);
+      padding: 0.65rem 1.25rem;
+    }
+
+    .calibration-inner {
+      max-width: 1680px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      font-size: 0.76rem;
+    }
+
+    .calibration-sliders {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .slider-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      color: #4A5247;
+      font-weight: 500;
+    }
+
+    .slider-group input[type="range"] {
+      width: 6.5rem;
+      accent-color: var(--botanical-olive);
+      cursor: pointer;
+    }
+
+    .slider-val {
+      font-family: monospace;
+      font-size: 0.7rem;
+      background-color: var(--bg-ivory);
+      padding: 0.12rem 0.45rem;
+      border-radius: 6px;
+      border: 1px solid var(--border-warm);
+    }
+
+    /* Mobile Instruction Strip */
+    .mobile-strip {
+      background-color: rgba(239, 236, 228, 0.92);
+      border-bottom: 1px solid var(--border-warm);
+      padding: 0.4rem 0.75rem;
+      text-align: center;
+      font-size: 0.7rem;
+      color: var(--botanical-olive);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      z-index: 20;
+    }
+
+    @media (min-width: 1280px) {
+      .mobile-strip {
+        display: none;
+      }
+    }
+
+    /* ============================================================================
+       3. MAIN SPATIAL WORKSPACE & 7-CATEGORY GRID
+       ============================================================================ */
+    .nawa-main {
+      flex: 1;
+      max-width: 1680px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0.75rem 0.65rem 7.25rem 0.65rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: stretch;
+      z-index: 10;
+    }
+
+    @media (min-width: 640px) {
+      .nawa-main {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .nawa-main {
+        flex-direction: row;
+        padding-bottom: 1.5rem;
+      }
+    }
+
+    .categories-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.65rem;
+      align-items: stretch;
+    }
+
+    @media (min-width: 640px) {
+      .categories-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.75rem;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .categories-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .categories-grid {
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+      }
+    }
+
+    /* ============================================================================
+       4. SPATIAL ORBIT COLUMN & GPU LAYER PROMOTION
+       ============================================================================ */
+    .spatial-orbit-stage {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-radius: 38px;
+      padding: 0.85rem 0.55rem;
+      touch-action: pan-y;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+      cursor: grab;
+      /* CSS Containment isolates layout & paint per category column for 120Hz smoothness */
+      contain: layout style;
+      transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .spatial-orbit-stage:active {
+      cursor: grabbing;
+    }
+
+    .axis-hairline {
+      pointer-events: none;
+      position: absolute;
+      left: 50%;
+      top: 3.5rem;
+      bottom: 4rem;
+      width: 1px;
+      transform: translateX(-50%);
+      opacity: 0.24;
+    }
+
+    .cat-header {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 0 0.25rem;
+      pointer-events: none;
+    }
+
+    .cat-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      margin-bottom: 0.15rem;
+    }
+
+    .cat-index {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      color: #847E72;
+    }
+
+    .cat-dot {
+      width: 0.38rem;
+      height: 0.38rem;
+      border-radius: 50%;
+    }
+
+    .cat-name-en {
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      color: #847E72;
+      text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 110px;
+    }
+
+    .cat-name-ar {
+      margin: 0;
+      font-size: 0.94rem;
+      font-weight: 700;
+      color: var(--ink-deep);
+      line-height: 1.3;
+    }
+
+    .cat-subtitle {
+      margin: 0.15rem 0 0 0;
+      font-size: 0.63rem;
+      color: #6E6A61;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* 2.5D Orbit Stage Container */
+    .orbit-viewport {
+      position: relative;
+      margin: 0.4rem 0;
+      height: 210px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 800px;
+    }
+
+    .orbit-svg {
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      position: absolute;
+      inset: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .spin-badge {
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      z-index: 32;
+    }
+
+    .spin-badge-inner {
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      background-color: rgba(43, 53, 41, 0.92);
+      color: var(--bg-ivory);
+      font-size: 0.58rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+    }
+
+    .dishes-stage {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-style: preserve-3d;
+    }
+
+    /* GPU-Promoted Dish Node (Zero layout recalculation during 120Hz orbit) */
+    .spatial-dish-node {
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      margin-left: -45px;
+      margin-top: -45px;
+      left: 50%;
+      top: 50%;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+      cursor: grab;
+      will-change: transform, opacity;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    .spatial-dish-node:active {
+      cursor: grabbing;
+    }
+
+    .dish-ceramic-plate {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: box-shadow 0.2s ease;
+    }
+
+    .dish-rim-inner {
+      width: 84%;
+      height: 84%;
+      border-radius: 50%;
+      overflow: hidden;
+      position: relative;
+      border: 1.5px solid rgba(255, 255, 255, 0.78);
+      background-color: #E5DFD3;
+    }
+
+    .dish-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+      user-select: none;
+      display: block;
+    }
+
+    .dish-gloss {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 28% 22%, rgba(255,255,255,0.32) 0%, transparent 55%);
+    }
+
+    .dish-price-pill {
+      position: absolute;
+      bottom: -0.45rem;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      padding: 0.12rem 0.5rem;
+      border-radius: 999px;
+      font-size: 0.64rem;
+      font-weight: 700;
+      box-shadow: 0 4px 10px rgba(31, 36, 31, 0.22);
+      border: 1px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 0.18rem;
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease, background-color 0.18s ease;
+    }
+
+    .hold-ring-svg {
+      position: absolute;
+      inset: -9px;
+      width: calc(100% + 18px);
+      height: calc(100% + 18px);
+      transform: rotate(-90deg);
+      pointer-events: none;
+    }
+
+    .hold- float-badge {
+      pointer-events: none;
+      position: absolute;
+      top: -1.6rem;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      background-color: var(--terracotta);
+      color: #fff;
+      font-size: 0.58rem;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(198, 93, 59, 0.35);
+    }
+
+    /* Category Footer Callout & Controls */
+    .cat-footer {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding-top: 0.25rem;
+    }
+
+    .front-callout {
+      min-height: 44px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0 0.25rem;
+      pointer-events: none;
+    }
+
+    .front-dish-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--ink-deep);
+      line-height: 1.25;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .front-dish-desc {
+      font-size: 0.64rem;
+      color: var(--ink-muted);
+      margin-top: 0.15rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .tap-micro-notice {
+      margin-top: 0.25rem;
+      font-size: 0.58rem;
+      color: var(--ink-subtle);
+      min-height: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tap-micro-notice.active-alert {
+      padding: 0.1rem 0.5rem;
+      border-radius: 999px;
+      background-color: rgba(198, 93, 59, 0.15);
+      color: var(--terracotta-dark);
+      font-weight: 700;
+    }
+
+    .orbit-controls-bar {
+      margin-top: 0.35rem;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.25rem;
+      padding: 0.4rem 0.2rem 0 0.2rem;
+      border-top: 1px solid rgba(220, 213, 199, 0.65);
+    }
+
+    .icon-circle-btn {
+      width: 1.55rem;
+      height: 1.55rem;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      color: #4A5247;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.15s ease, transform 0.12s ease;
+      padding: 0;
+    }
+
+    .icon-circle-btn:hover {
+      background-color: var(--bg-sand-hover);
+    }
+
+    .icon-circle-btn:active {
+      transform: scale(0.9);
+    }
+
+    .dots-row {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .orbit-dot {
+      height: 0.38rem;
+      width: 0.38rem;
+      border-radius: 999px;
+      border: none;
+      padding: 0;
+      background-color: #C5BDB0;
+      cursor: pointer;
+      transition: width 0.22s ease, background-color 0.22s ease;
+    }
+
+    .orbit-dot.active {
+      width: 1rem;
+      background-color: var(--botanical-dark);
+    }
+
+    /* ============================================================================
+       5. DESKTOP & MOBILE ORDER VESSEL (CART DROP TARGET)
+       ============================================================================ */
+    .desktop-vessel {
+      display: none;
+      width: 325px;
+      flex-shrink: 0;
+      flex-direction: column;
+      justify-content: space-between;
+      border-radius: 36px;
+      padding: 1rem;
+      position: relative;
+      background-color: rgba(239, 236, 228, 0.92);
+      border: 1px solid var(--border-warm);
+      box-shadow: 0 8px 28px -12px rgba(31, 36, 31, 0.08);
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    @media (min-width: 1024px) {
+      .desktop-vessel {
+        display: flex;
+      }
+    }
+
+    .desktop-vessel.drag-approaching {
+      background-color: #EAE5DA;
+      border: 2px dashed var(--botanical-olive);
+      box-shadow: 0 20px 40px -15px rgba(31, 36, 31, 0.18);
+    }
+
+    .desktop-vessel.drag-over-active {
+      background-color: var(--botanical-dark);
+      color: var(--bg-ivory);
+      border: 2px solid var(--terracotta);
+      box-shadow: 0 0 0 4px rgba(198, 93, 59, 0.35), 0 25px 50px -12px rgba(31, 36, 31, 0.4);
+      transform: scale(1.015);
+    }
+
+    .vessel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(125, 120, 111, 0.18);
+    }
+
+    .vessel-badge {
+      width: 2.3rem;
+      height: 2.3rem;
+      border-radius: 50%;
+      background-color: var(--botanical-dark);
+      color: var(--bg-ivory);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease;
+    }
+
+    .vessel-badge.pulse-hit {
+      transform: scale(1.28);
+      background-color: var(--terracotta);
+      color: #fff;
+    }
+
+    .drop-aperture {
+      margin-top: 0.75rem;
+      border-radius: 18px;
+      padding: 0.75rem;
+      text-align: center;
+      border: 1px solid rgba(220, 213, 199, 0.9);
+      background-color: rgba(247, 244, 238, 0.75);
+      transition: all 0.25s ease;
+    }
+
+    .desktop-vessel.drag-approaching .drop-aperture {
+      background-color: rgba(61, 74, 58, 0.08);
+      border-color: rgba(61, 74, 58, 0.45);
+      padding: 1.05rem 0.75rem;
+    }
+
+    .desktop-vessel.drag-over-active .drop-aperture {
+      background-color: rgba(198, 93, 59, 0.24);
+      border-color: var(--terracotta);
+      padding: 1.25rem 0.75rem;
+    }
+
+    .cart-items-list {
+      margin-top: 0.75rem;
+      max-height: 290px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding-right: 0.15rem;
+    }
+
+    .cart-item-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      padding: 0.5rem;
+      border-radius: 16px;
+      background-color: var(--bg-ivory);
+      border: 1px solid #E2DDD1;
+      color: var(--ink-deep);
+    }
+
+    .desktop-vessel.drag-over-active .cart-item-card {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.16);
+      color: var(--bg-ivory);
+    }
+
+    .qty-btn {
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      border: none;
+      background-color: var(--bg-sand);
+      color: var(--ink-deep);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .qty-btn:hover {
+      background-color: #E0DBD0;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      margin-top: 0.55rem;
+      padding: 0.78rem 1rem;
+      border-radius: 999px;
+      border: none;
+      font-family: 'Readex Pro', 'Tajawal', sans-serif;
+      font-weight: 600;
+      font-size: 0.76rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background-color: var(--botanical-dark);
+      color: var(--bg-ivory);
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(31, 36, 31, 0.18);
+      transition: background-color 0.2s ease, transform 0.15s ease;
+    }
+
+    .checkout-btn:hover:not(:disabled) {
+      background-color: var(--ink-deep);
+    }
+
+    .checkout-btn:disabled {
+      background-color: var(--border-warm);
+      color: #7D786F;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    /* Mobile Bottom Dock */
+    .mobile-dock {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 40;
+      padding: 0.25rem 0.75rem 0.75rem 0.75rem;
+    }
+
+    @media (min-width: 1024px) {
+      .mobile-dock {
+        display: none;
+      }
+    }
+
+    .mobile-dock-inner {
+      border-radius: 26px;
+      padding: 0.75rem 0.9rem;
+      background-color: rgba(31, 36, 31, 0.96);
+      color: var(--bg-ivory);
+      border: 1.5px solid var(--botanical-olive);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+      transition: all 0.25s ease;
+    }
+
+    .mobile-dock-inner.drag-approaching {
+      border-style: dashed;
+      border-color: var(--terracotta);
+    }
+
+    .mobile-dock-inner.drag-over-active {
+      background-color: var(--botanical-dark);
+      border-color: var(--terracotta);
+      box-shadow: 0 0 0 4px rgba(198, 93, 59, 0.5), 0 20px 45px rgba(0, 0, 0, 0.45);
+      transform: scale(1.02);
+    }
+
+    /* ============================================================================
+       6. 120HZ SPRING-MASS 3D DRAGGED DISH OVERLAY
+       ============================================================================ */
+    .drag-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 60;
+      perspective: 900px;
+    }
+
+    .floating-drag-node {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 116px;
+      height: 116px;
+      margin-left: -58px;
+      margin-top: -58px;
+      will-change: transform;
+      transform-style: preserve-3d;
+    }
+
+    .floating-drag-plate {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      padding: 0.48rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: box-shadow 0.2s ease;
+    }
+
+    /* ============================================================================
+       7. MODALS & TOASTS
+       ============================================================================ */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 70;
+      background-color: rgba(31, 36, 31, 0.45);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-card {
+      background-color: var(--bg-ivory);
+      border: 1px solid var(--border-warm);
+      border-radius: 32px;
+      max-width: 28rem;
+      width: 100%;
+      padding: 1.35rem;
+      box-shadow: 0 25px 60px -15px rgba(31, 36, 31, 0.35);
+      position: relative;
+    }
+
+    .toast-wrap {
+      position: fixed;
+      top: 4.8rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 80;
+      pointer-events: none;
+    }
+
+    .toast-pill {
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      box-shadow: 0 14px 30px rgba(31, 36, 31, 0.25);
+      border: 1px solid var(--terracotta);
+      font-size: 0.76rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: rgba(43, 53, 41, 0.96);
+      color: var(--bg-ivory);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @keyframes spinAnim {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .spin-icon {
+      animation: spinAnim 1.8s linear infinite;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Ambient Architectural Atmosphere -->
+  <div class="nawa-atmosphere"></div>
+
+  <!-- ============================================================================
+       1. TOP EDITORIAL HEADER & SPATIAL CALIBRATION BAR
+       ============================================================================ -->
+  <header class="nawa-header">
+    <div class="header-inner">
+      
+      <!-- Brand Identity -->
+      <div class="brand-wrap">
+        <div class="brand-monogram font-editorial">N</div>
+        <div>
+          <div class="brand-titles">
+            <h1 class="brand-name-ar font-arabic-display">نَـوَى</h1>
+            <span class="brand-name-en font-editorial">NAWA 120HZ SPATIAL MENU</span>
+          </div>
+          <p class="brand-subtitle">
+            اسحب باللمس لتدوير المدار مع التقاط مغناطيسي تلقائي • المس الطبق مطولاً لسحبه فيزيائياً للسلة
+          </p>
+        </div>
+      </div>
+
+      <!-- Interactive Gesture Legend Pill (Desktop) -->
+      <div class="gesture-legend">
+        <span class="legend-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
+          <strong>تدوير مغناطيسي:</strong> اسحب المدار ليستقر أقرب طبق في الصدارة
+        </span>
+        <span class="legend-sep">|</span>
+        <span class="legend-item">
+          <span class="pulse-dot"></span>
+          <strong>اللمس المطول (Hold &amp; Drop):</strong> اثبت على الطبق واسحبه بفيزياء 3D للسلة
+        </span>
+      </div>
+
+      <!-- Controls: Sound Synthesizer Toggle, Motion Toggle & Spatial Calibration -->
+      <div class="header-controls">
+        <button id="btn-sound-toggle" type="button" class="pill-btn" title="تفعيل / كتم المؤثرات الصوتية اللمسية">
+          <span id="icon-sound-state" style="display:inline-flex;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+          </span>
+          <span id="label-sound-state">الصوت اللمسي</span>
+        </button>
+
+        <button id="btn-motion-toggle" type="button" class="pill-btn" title="إيقاف / تشغيل الدوران التلقائي">
+          <span id="icon-motion-state" style="display:inline-flex;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+          </span>
+          <span id="label-motion-state">تهدئة الحركة</span>
+        </button>
+
+        <button id="btn-calibration-toggle" type="button" class="pill-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" x2="4" y1="21" y2="14"/><line x1="4" x2="4" y1="10" y2="3"/><line x1="12" x2="12" y1="21" y2="12"/><line x1="12" x2="12" y1="8" y2="3"/><line x1="20" x2="20" y1="21" y2="16"/><line x1="20" x2="20" y1="12" y2="3"/><line x1="2" x2="6" y1="14" y2="14"/><line x1="10" x2="14" y1="8" y2="8"/><line x1="18" x2="22" y1="16" y2="16"/></svg>
+          <span>القطر المداري</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Collapsible Spatial Calibration Drawer -->
+    <div id="calibration-drawer" class="calibration-drawer hidden">
+      <div class="calibration-inner">
+        <div style="display:flex;align-items:center;gap:0.5rem;color:var(--botanical-dark);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C65D3B" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+          <strong>معايرة الفضاء المداري (120Hz ProMotion Engine):</strong>
+        </div>
+
+        <div class="calibration-sliders">
+          <label class="slider-group">
+            <span>قطر المدار المحلي:</span>
+            <input id="input-orbit-scale" type="range" min="0.6" max="1.35" step="0.05" value="1.0" />
+            <span id="val-orbit-scale" class="slider-val">42px</span>
+          </label>
+
+          <label class="slider-group">
+            <span>سرعة الدوران:</span>
+            <input id="input-speed-scale" type="range" min="0.3" max="2.0" step="0.1" value="1.0" />
+            <span id="val-speed-scale" class="slider-val">1.0x</span>
+          </label>
+
+          <button id="btn-reset-calibration" type="button" style="background:none;border:none;color:var(--terracotta);cursor:pointer;font-family:inherit;font-size:0.75rem;font-weight:700;display:inline-flex;align-items:center;gap:0.25rem;">
+            إعادة الضبط
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Compact Instruction Strip -->
+  <div class="mobile-strip">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C65D3B" stroke-width="2"><polyline points="5 9 2 12 5 15"/><polyline points="9 5 12 2 15 5"/><polyline points="15 19 12 22 9 19"/><polyline points="19 9 22 12 19 15"/><line x1="2" x2="22" y1="12" y2="12"/><line x1="12" x2="12" y1="2" y2="22"/></svg>
+    <span><strong>تدوير باللمس:</strong> اسحب المدار يميناً ويساراً • <strong>للطلب:</strong> المس الطبق مطولاً واسحبه لوعاء الطلبات</span>
+  </div>
+
+  <!-- ============================================================================
+       2. MAIN SPATIAL ENVIRONMENT: ALL 7 CATEGORIES + PERSISTENT ORDER VESSEL
+       ============================================================================ -->
+  <main class="nawa-main">
+    <!-- ALL 7 SPATIAL CATEGORY COLUMNS VISIBLE SIMULTANEOUSLY -->
+    <section id="categories-grid" aria-label="أعمدة الفئات المكانية السبعة" class="categories-grid"></section>
+
+    <!-- PERSISTENT DESKTOP SPATIAL ORDER VESSEL -->
+    <aside id="desktop-cart-vessel" aria-label="وعاء الطلبات المكاني" class="desktop-vessel">
+      <div>
+        <div class="vessel-header">
+          <div style="display:flex;align-items:center;gap:0.65rem;">
+            <div id="desktop-cart-badge-icon" class="vessel-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </div>
+            <div>
+              <h2 class="font-arabic-display" style="margin:0;font-size:0.88rem;font-weight:700;">وعاء الطلبات المكاني</h2>
+              <p id="desktop-cart-subtitle" style="margin:0.1rem 0 0 0;font-size:0.7rem;opacity:0.75;">1 طبق مختار</p>
+            </div>
+          </div>
+          <span class="font-editorial" style="font-size:0.72rem;letter-spacing:0.14em;opacity:0.6;">ORDER VESSEL</span>
+        </div>
+
+        <!-- Magnetic Drop Aperture Zone -->
+        <div id="desktop-drop-aperture" class="drop-aperture">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:0.3rem;">
+            <div id="desktop-drop-sparkle" style="width:2rem;height:2rem;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid rgba(61,74,58,0.3);color:var(--botanical-olive);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+            </div>
+            <p id="desktop-drop-title" style="margin:0;font-size:0.76rem;font-weight:700;">منطقة الجذب والإسقاط المغناطيسي</p>
+            <p style="margin:0;font-size:0.64rem;opacity:0.72;">اضغط مطولاً على أي طبق من المدارات السبعة واسحبه إلى هنا</p>
+          </div>
+        </div>
+
+        <!-- Cart Items List -->
+        <div id="desktop-cart-items" class="cart-items-list nawa-scroll"></div>
+      </div>
+
+      <!-- Financial Summary -->
+      <div style="padding-top:0.75rem;margin-top:0.75rem;border-top:1px solid rgba(125,120,111,0.18);font-size:0.75rem;">
+        <div style="display:flex;justify-content:space-between;opacity:0.78;margin-bottom:0.35rem;">
+          <span>المجموع الفرعي</span>
+          <span id="desktop-subtotal">0.00 ر.س</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;opacity:0.78;margin-bottom:0.45rem;">
+          <span>ضريبة القيمة المضافة (15%)</span>
+          <span id="desktop-vat">0.00 ر.س</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:0.88rem;font-weight:700;padding-top:0.4rem;border-top:1px solid rgba(125,120,111,0.18);">
+          <span>الإجمالي المستحق</span>
+          <span id="desktop-grandtotal" style="color:var(--terracotta);">0.00 ر.س</span>
+        </div>
+
+        <button id="btn-desktop-checkout" type="button" class="checkout-btn">
+          <span>مراجعة وتأكيد الطلب المكاني</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        </button>
+      </div>
+    </aside>
+  </main>
+
+  <!-- ============================================================================
+       3. PERSISTENT MOBILE / TABLET BOTTOM SPATIAL ORDER DOCK
+       ============================================================================ -->
+  <div id="mobile-cart-dock" class="mobile-dock">
+    <div id="mobile-cart-inner" class="mobile-dock-inner">
+      <div id="mobile-drag-banner" class="hidden" style="padding:0.4rem 0;text-align:center;align-items:center;justify-content:center;gap:0.5rem;">
+        <svg class="spin-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C65D3B" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+        <span id="mobile-drag-banner-text" style="font-size:0.76rem;font-weight:700;">اسحب الطبق إلى هذا الشريط السفلي وأفلته للطلب</span>
+      </div>
+
+      <div id="mobile-idle-bar" style="display:flex;align-items:center;justify-content:space-between;gap:0.75rem;">
+        <button id="btn-mobile-expand" type="button" style="background:none;border:none;color:inherit;font-family:inherit;display:flex;align-items:center;gap:0.65rem;text-align:right;cursor:pointer;padding:0;">
+          <div id="mobile-cart-count" style="width:2.25rem;height:2.25rem;border-radius:50%;background-color:var(--terracotta);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.76rem;">1</div>
+          <div>
+            <div style="font-size:0.76rem;font-weight:700;">وعاء الطلبات (منطقة الجذب المغناطيسي)</div>
+            <div id="mobile-cart-summary-line" style="font-size:0.68rem;color:#C8C0B0;">الإجمالي: 0.00 ر.س • اضغط لعرض السلة</div>
+          </div>
+        </button>
+
+        <button id="btn-mobile-checkout" type="button" style="padding:0.48rem 0.95rem;border-radius:999px;border:none;background-color:var(--bg-ivory);color:var(--ink-deep);font-family:inherit;font-size:0.74rem;font-weight:700;cursor:pointer;">
+          مراجعة الطلب
+        </button>
+      </div>
+
+      <div id="mobile-cart-drawer" class="hidden nawa-scroll" style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.15);max-height:220px;overflow-y:auto;display:flex;flex-direction:column;gap:0.45rem;"></div>
+    </div>
+  </div>
+
+  <!-- ============================================================================
+       4. LIVE 3D SPRING-PHYSICS DRAGGED DISH + SVG BOTANICAL TETHER
+       ============================================================================ -->
+  <div id="drag-overlay" class="drag-overlay hidden">
+    <svg style="width:100%;height:100%;">
+      <line id="tether-origin-line" x1="0" y1="0" x2="0" y2="0" stroke="#3D4A3A" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.45" />
+      <path id="tether-target-curve" d="M 0 0 Q 0 0 0 0" fill="none" stroke="#3D4A3A" stroke-width="1.5" stroke-dasharray="6 6" opacity="0.7" />
+    </svg>
+
+    <div id="floating-drag-node" class="floating-drag-node">
+      <div id="floating-drag-plate" class="floating-drag-plate">
+        <img id="floating-drag-img" src="" alt="" style="width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;" />
+        <div style="position:absolute;bottom:-0.75rem;left:0;right:0;display:flex;justify-content:center;">
+          <span id="floating-drag-label" style="padding:0.18rem 0.65rem;border-radius:999px;background-color:var(--ink-deep);color:var(--bg-ivory);font-size:0.64rem;font-weight:700;box-shadow:0 6px 16px rgba(0,0,0,0.3);white-space:nowrap;"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================================
+       5. DISH INSPECTION MODAL
+       ============================================================================ -->
+  <div id="inspect-modal-backdrop" class="modal-backdrop hidden">
+    <div id="inspect-modal-card" class="modal-card">
+      <button id="btn-close-inspect" type="button" class="icon-circle-btn" style="position:absolute;top:1rem;left:1rem;width:2rem;height:2rem;background-color:var(--bg-sand);" aria-label="إغلاق">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <div id="inspect-plate" style="width:6rem;height:6rem;border-radius:50%;padding:0.35rem;flex-shrink:0;box-shadow:0 12px 24px rgba(31,36,31,0.18);">
+          <img id="inspect-img" src="" alt="" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" />
+        </div>
+        <div>
+          <div id="inspect-dietary" style="display:flex;flex-wrap:wrap;gap:0.25rem;margin-bottom:0.3rem;"></div>
+          <h3 id="inspect-title" class="font-arabic-display" style="margin:0;font-size:1.1rem;font-weight:700;"></h3>
+          <div style="font-size:0.88rem;font-weight:700;color:var(--terracotta);margin-top:0.2rem;">
+            <span id="inspect-price"></span>
+            <span id="inspect-meta" style="font-size:0.74rem;color:#6E6A61;font-weight:400;"></span>
+          </div>
+        </div>
+      </div>
+
+      <p id="inspect-desc" style="margin:0.85rem 0 0 0;font-size:0.78rem;color:#4A5247;line-height:1.65;"></p>
+
+      <div style="margin-top:1rem;">
+        <label style="display:block;font-size:0.75rem;font-weight:700;margin-bottom:0.45rem;">
+          تفضيلات التحضير (تُحفظ عند سحب الطبق إلى السلة):
+        </label>
+        <div id="inspect-modifiers" style="display:flex;flex-wrap:wrap;gap:0.4rem;"></div>
+      </div>
+
+      <div style="margin-top:1.15rem;padding:0.75rem;border-radius:16px;background-color:var(--bg-sand);border:1px solid var(--border-warm);display:flex;align-items:center;justify-content:space-between;font-size:0.74rem;color:var(--botanical-olive);">
+        <span><strong>لإضافة هذا الطبق:</strong> المس صورته مطولاً في المدار واسحبه إلى وعاء الطلبات.</span>
+        <button id="btn-ok-inspect" type="button" class="pill-btn active-dark" style="margin-right:0.5rem;flex-shrink:0;">حسناً</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================================
+       6. PROTOTYPE ORDER SUMMARY MODAL
+       ============================================================================ -->
+  <div id="checkout-modal-backdrop" class="modal-backdrop hidden">
+    <div id="checkout-modal-card" class="modal-card" style="max-width:32rem;">
+      <button id="btn-close-checkout" type="button" class="icon-circle-btn" style="position:absolute;top:1rem;left:1rem;width:2rem;height:2rem;background-color:var(--bg-sand);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+
+      <div style="display:flex;align-items:center;gap:0.5rem;color:var(--terracotta);margin-bottom:0.4rem;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+        <span style="font-size:0.74rem;font-weight:700;">نموذج تفاعلي للواجهة المكانية (Prototype Integration Point)</span>
+      </div>
+
+      <h3 class="font-arabic-display" style="margin:0;font-size:1.1rem;font-weight:700;">ملخص الطلب المكاني الجاهز للربط البرمجي</h3>
+      <p style="margin:0.35rem 0 0 0;font-size:0.75rem;color:var(--ink-muted);line-height:1.6;">
+        هذه الواجهة عبارة عن نموذج تفاعلي كامل (Interactive Spatial Prototype) غير متصل ببوابة دفع حقيقية حالياً. وفيما يلي بيانات سلة الطلبات الفعلية التي تم تجميعها عبر السحب والإفلات:
+      </p>
+
+      <div id="checkout-items-list" class="nawa-scroll" style="margin-top:0.9rem;background-color:var(--bg-sand);border-radius:16px;padding:0.75rem;max-height:190px;overflow-y:auto;font-size:0.76rem;"></div>
+
+      <div style="margin-top:1.1rem;display:flex;align-items:center;justify-content:flex-end;gap:0.5rem;">
+        <button id="btn-clear-cart" type="button" class="pill-btn">إفراغ السلة</button>
+        <button id="btn-return-menu" type="button" class="pill-btn active-dark">العودة للقائمة المكانية</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================================
+       7. FLOATING STATUS CONFIRMATION TOAST
+       ============================================================================ -->
+  <div id="toast-container" class="toast-wrap hidden">
+    <div id="toast-pill" class="toast-pill">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C65D3B" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+      <span id="toast-text"></span>
+    </div>
+  </div>
+
+  <!-- ============================================================================
+       8. 120HZ PROMOTION ENGINE + SPRING PHYSICS + WEB AUDIO SYNTHESIZER
+       ============================================================================ -->
+  <script>
+    /**
+     * 1. PROCEDURAL WEB AUDIO API MICRO-SYNTHESIZER (ZERO EXTERNAL ASSETS)
+     */
+    const SoundEngine = {
+      ctx: null,
+      enabled: true,
+
+      init() {
+        if (!this.enabled) return null;
+        if (!this.ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) this.ctx = new AudioCtx();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume().catch(() => {});
+        }
+        return this.ctx;
+      },
+
+      // Subtle ceramic/wood tick when a new dish rotates into the front focal spot
+      playOrbitTick() {
+        const ctx = this.init();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(520, now);
+        osc.frequency.exponentialRampToValueAtTime(170, now + 0.028);
+        gain.gain.setValueAtTime(0.045, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.028);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.03);
+      },
+
+      // Warm harmonic chime when long-press completes & dish detaches into 3D space
+      playPickupChime() {
+        const ctx = this.init();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        [440, 659.25].forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.035);
+          gain.gain.setValueAtTime(0.055, now + idx * 0.035);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.035 + 0.19);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + idx * 0.035);
+          osc.stop(now + idx * 0.035 + 0.2);
+        });
+      },
+
+      // Subtle magnetic hum when entering the Order Vessel drop zone
+      playMagneticSnap() {
+        const ctx = this.init();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(310, now);
+        osc.frequency.exponentialRampToValueAtTime(490, now + 0.075);
+        gain.gain.setValueAtTime(0.04, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.085);
+      },
+
+      // Rich confirmation chord when dish is dropped inside the Order Vessel
+      playDropSuccess() {
+        const ctx = this.init();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        [523.25, 659.25, 783.99, 1046.5].forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.045);
+          gain.gain.setValueAtTime(0.06, now + idx * 0.045);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.045 + 0.32);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + idx * 0.045);
+          osc.stop(now + idx * 0.045 + 0.34);
+        });
+      }
+    };
+
+    /**
+     * 2. MENU DATA & SPATIAL CONFIGURATION (ALL 7 CATEGORIES)
+     */
+    const MENU_CATEGORIES = [
+      {
+        id: 'burgers',
+        nameAr: 'البرغر الفاخر',
+        nameEn: 'ARTISANAL BURGERS',
+        subtitleAr: 'لحم واغيو معتّق وخبز بريوش مخبوز يدوياً',
+        displayOrder: 1,
+        orbitRadiusX: 42,
+        orbitRadiusY: 22,
+        rotationSpeed: 0.24,
+        accentColor: '#A34828',
+        dishes: [
+          {
+            id: 'bg-1',
+            categoryId: 'burgers',
+            nameAr: 'واغيو الكمأة السوداء',
+            descriptionAr: 'شريحة واغيو مشوية على الحطب، جبن غرويير سويسري معتق، مايونيز الكمأة السوداء، وبصل مكرمل بالبلسميك.',
+            price: 68,
+            currency: 'ر.س',
+            calories: '740 سعرة',
+            prepTime: '14 دقيقة',
+            dietary: ['لحم محلي طازج'],
+            modifiers: ['نضج متوسط (Medium)', 'نضج كامل (Well Done)', 'إضافة شريحة واغيو (+24 ر.س)'],
+            plateTone: '#E8DFD1',
+            rimColor: '#B89F7D',
+            image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=85'
+          },
+          {
+            id: 'bg-2',
+            categoryId: 'burgers',
+            nameAr: 'سماش المدخن بالحطب',
+            descriptionAr: 'طبقتان من لحم الأنغوس المقرمش الأطراف، جبن شيدر حاد، مخلل الشبت المنزلي، وصلصة نَوى المدخنة.',
+            price: 54,
+            currency: 'ر.س',
+            calories: '680 سعرة',
+            prepTime: '12 دقيقة',
+            dietary: ['الأكثر طلباً'],
+            modifiers: ['نضج متوسط (Medium)', 'بدون مخلل', 'حار قليلاً'],
+            plateTone: '#E5DDD3',
+            rimColor: '#9C8265',
+            image: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=85'
+          },
+          {
+            id: 'bg-3',
+            categoryId: 'burgers',
+            nameAr: 'برغر الدجاج المقرمش بالزعتر',
+            descriptionAr: 'صدر دجاج متبل باللبن والزعتر البري، سلطة ملفوف بالتفاح الأخضر، وعسل حار بالزبدة.',
+            price: 48,
+            currency: 'ر.س',
+            calories: '610 سعرة',
+            prepTime: '11 دقيقة',
+            dietary: ['تتبيلة خاصة'],
+            modifiers: ['عسل حار إضافي', 'عادي بدون حرارة'],
+            plateTone: '#ECE6DC',
+            rimColor: '#B49A78',
+            image: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?auto=format&fit=crop&w=600&q=85'
+          },
+          {
+            id: 'bg-4',
+            categoryId: 'burgers',
+            nameAr: 'برغر الفطر البري والكمأة',
+            descriptionAr: 'فطر بورتوبيللو مشوي محشو بجبن الماعز والأعشاب الجبلية مع جرجير بري وزيت زيتون بكر.',
+            price: 52,
+            currency: 'ر.س',
+            calories: '490 سعرة',
+            prepTime: '10 دقائق',
+            dietary: ['نباتي'],
+            modifiers: ['خبز بريوش', 'خبز الحبوب الكاملة'],
+            plateTone: '#E2E5DC',
+            rimColor: '#7A8B70',
+            image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=600&q=85'
+          }
+        ]
+      },
+      {
+        id: 'pizza',
+        nameAr: 'البيتزا الحجرية',
+        nameEn: 'WOOD-FIRED PIZZA',
+        subtitleAr: 'عجينة مخمّرة 72 ساعة في فرن الحجر النابولي',
+        displayOrder: 2,
+        orbitRadiusX: 44,
+        orbitRadiusY: 20,
+        rotationSpeed: -0.20,
+        accentColor: '#B85A3A',
+        dishes: [
+          {
+            id: 'pz-1',
+            categoryId: 'pizza',
+            nameAr: 'بوراتا الريحان والطماطم الكرزية',
+            descriptionAr: 'صلصة سان مارزانو، كرة بوراتا كريمية طازجة، أوراق ريحان قطف اليوم، وزيت زيتون معتق.',
+            price: 64,
+            currency: 'ر.س',
+            calories: '790 سعرة',
+            prepTime: '15 دقيقة',
+            dietary: ['نباتي', 'توقيع الشيف'],
+            modifiers: ['عجينة كلاسيكية', 'أطراف مقرمشة إضافية'],
+            plateTone: '#EDE5D8',
+            rimColor: '#C65D3B',
+            image: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=600&q=85'
+          },
+          {
+            id: 'pz-2',
+            categoryId: 'pizza',
+            nameAr: 'بيتزا الكمأة والفطر البري',
+            descriptionAr: 'قاعدة كريمة البارميزان البيضاء، تشكيلة فطر بري مشوي، رقائق الكمأة الإيطالية، وزعتر طازج.',
+            price: 76,
+            currency: 'ر.س',
+            calories: '820 سعرة',
+            prepTime: '16 دقيقة',
+            dietary: ['نباتي'],
+            modifiers: ['حجم كامل (8 قطع)', 'إضافة عسل بري (+6 ر.س)'],
+            plateTone: '#E5DFD5',
+            rimColor: '#8B7965',
+            image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=600&q=85'
+          },
+          {
+            id: 'pz-3',
+            categoryId: 'pizza',
+            nameAr: 'بيبروني البقر المدخن والعسل الحار',
+            descriptionAr: 'شرائح بيبروني بقري حرفي مقرمش، موزاريلا بافلو، ورذاذ عسل الزهور الحار.',
+            price: 62,
+            currency: 'ر.س',
+            calories: '860 سعرة',
+            prepTime: '14 دقيقة',
+            dietary: ['حار متوازن'],
+            modifiers: ['عسل حار جانبي', 'بدون فلفل حار'],
+            plateTone: '#EFE3D8',
+            rimColor: '#A84A32',
+            image: 'https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=600&q=85'
+          },
+          {
+            id: 'pz-4',
+            categoryId: 'pizza',
+            nameAr: 'مارغريتا نابولي العتيقة',
+            descriptionAr: 'طماطم سان مارزانو العضوية، جبن فيور دي لاتيه، بارميزان معتق 24 شهراً، وورق ريحان.',
+            price: 52,
+            currency: 'ر.س',
+            calories: '710 سعرة',
+            prepTime: '12 دقيقة',
+            dietary: ['نباتي'],
+            modifiers: ['عجينة تقليدية', 'رشة أوريغانو بري'],
+            plateTone: '#EFE9DF',
+            rimColor: '#B58969',
+            image: 'https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&w=600&q=85'
+          }
+        ]
+      },
+      {
+        id: 'grills',
+        nameAr: 'المشويات العريقة',
+        nameEn: 'HERITAGE GRILL',
+        subtitleAr: 'مشويات على جمر السمر بلمسة شامية معاصرة',
+        displayOrder: 3,
+        orbitRadiusX: 42,
+        orbitRadiusY: 22,
+        rotationSpeed: 0.18,
+        accentColor: '#7A4930',
+        dishes: [
+          {
+            id: 'gr-1',
+            categoryId: 'grills',
+            nameAr: 'ريش الضأن بالرمان والزعتر',
+            descriptionAr: 'ريش ضأن طرية مشوية على جمر السمر، مطلية بدبس الرمان المعتق وتقدم مع بطاطس مهروسة بالثوم المشوي.',
+            price: 94,
+            currency: 'ر.س',
+            calories: '690 سعرة',
+            prepTime: '18 دقيقة',
+            dietary: ['خالي من الغلوتين', 'توقيع نَوى'],
+            modifiers: ['استواء متوسط (Medium)', 'استواء كامل (Well)'],
+            plateTone: '#E7DED4',
+            rimColor: '#8B5A3C',
+            image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=85'
+          },
+          {
+            id: 'gr-2',
+            categoryId: 'grills',
+            nameAr: 'كباب الفستق الحلبي المحمص',
+            descriptionAr: 'لحم ضأن مفروم بالسكين مع الفستق الحلبي الأخضر والبهارات السبعة، يقدم فوق خبز التنور المحمص.',
+            price: 78,
+            currency: 'ر.س',
+            calories: '730 سعرة',
+            prepTime: '16 دقيقة',
+            dietary: ['يحتوي مكسرات'],
+            modifiers: ['مع صلصة طحينة', 'مع دبس رمان إضافي'],
+            plateTone: '#E3E5D8',
+            rimColor: '#6C7D5B',
+            image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=85'
+          },
+          {
+            id: 'gr-3',
+            categoryId: 'grills',
+            nameAr: 'أوصال الفيليه المتبلة بالسماق',
+            descriptionAr: 'مكعبات فيليه بقري فاخرة مشوية مع البصل اللؤلؤي والطماطم الكرزية ورشة سماق بلدي.',
+            price: 88,
+            currency: 'ر.س',
+            calories: '640 سعرة',
+            prepTime: '17 دقيقة',
+            dietary: ['غني بالبروتين'],
+            modifiers: ['استواء متوسط', 'إضافة خضار مشوية'],
+            plateTone: '#EBE2D8',
+            rimColor: '#9A6348',
+            image: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=85'
+          },
+          {
+            id: 'gr-4',
+            categoryId: 'grills',
+            nameAr: 'شيش طاووق الزعفران والليمون',
+            descriptionAr: 'صدور دجاج متبلة بالزعفران الإيراني واللبن والليمون المعصور، تقدم مع ثومية الأعشاب الخفيفة.',
+            price: 62,
+            currency: 'ر.س',
+            calories: '560 سعرة',
+            prepTime: '15 دقيقة',
+            dietary: ['صحي ومتوازن'],
+            modifiers: ['ثومية جانبية', 'خبز صاج محمص'],
+            plateTone: '#EFE9D8',
+            rimColor: '#C49A45',
+            image: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=600&q=85'
+          }
+        ]
+      },
+      {
+        id: 'sandwiches',
+        nameAr: 'السندويشات الحرفية',
+        nameEn: 'CRAFT SANDWICHES',
+        subtitleAr: 'خبز ساور دو مخبوز يومياً بحشوات مبتكرة',
+        displayOrder: 4,
+        orbitRadiusX: 40,
+        orbitRadiusY: 20,
+        rotationSpeed: -0.22,
+        accentColor: '#5B6B4F',
+        dishes: [
+          {
+            id: 'sw-1',
+            categoryId: 'sandwiches',
+            nameAr: 'بريسكت التمر الهندي المدخن',
+            descriptionAr: 'لحم بريسكت مطهو ببطء لمدة 12 ساعة، جبن بروفولون ذائب، وجرجير بري في خبز الساور دو المحمص.',
+            price: 56,
+            currency: 'ر.س',
+            calories: '630 سعرة',
+            prepTime: '10 دقائق',
+            dietary: ['تدخين بطيء'],
+            modifiers: ['خبز ساور دو', 'خبز شيباتا'],
+            plateTone: '#E9E2D6',
+            rimColor: '#8B6D52',
+            image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=85'
+          },
+          {
+            id: 'sw-2',
+            categoryId: 'sandwiches',
+            nameAr: 'حلومي المشوي والتين المجفف',
+            descriptionAr: 'شرائح جبن حلومي قبرصي مشوي، مربى التين والزنجبيل، أوراق نعناع طازجة، وجوز محمص.',
+            price: 44,
+            currency: 'ر.س',
+            calories: '510 سعرة',
+            prepTime: '9 دقائق',
+            dietary: ['نباتي'],
+            modifiers: ['بدون جوز', 'إضافة عسل بري'],
+            plateTone: '#E4E7DC',
+            rimColor: '#6E7F5E',
+            image: 'https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=600&q=85'
+          },
+          {
+            id: 'sw-3',
+            categoryId: 'sandwiches',
+            nameAr: 'ستيك فيليه الفطر والبارميزان',
+            descriptionAr: 'شرائح تندرلوين رفيعة مع الفطر المكرمل، كريمة الثوم المحمص، ورقائق البارميزان المعتق.',
+            price: 58,
+            currency: 'ر.س',
+            calories: '650 سعرة',
+            prepTime: '12 دقيقة',
+            dietary: ['الأكثر طلباً'],
+            modifiers: ['نضج متوسط', 'إضافة فلفل هالبينو'],
+            plateTone: '#ECE4DA',
+            rimColor: '#9E7B5F',
+            image: 'https://images.unsplash.com/photo-1553909489-cd47e0907980?auto=format&fit=crop&w=600&q=85'
+          },
+          {
+            id: 'sw-4',
+            categoryId: 'sandwiches',
+            nameAr: 'كلوب الدجاج والأفوكادو بالبيستو',
+            descriptionAr: 'صدر دجاج مشوي بالأعشاب، أفوكادو طازج، بيستو الفستق والريحان، وطماطم مجففة بالشمس.',
+            price: 46,
+            currency: 'ر.س',
+            calories: '540 سعرة',
+            prepTime: '9 دقائق',
+            dietary: ['يحتوي مكسرات'],
+            modifiers: ['خبز متعدد الحبوب', 'بدون بيستو'],
+            plateTone: '#E2E8DC',
+            rimColor: '#5B7553',
+            image: 'https://images.unsplash.com/photo-1567234669003-dce7a7a88821?auto=format&fit=crop&w=600&q=85'
+          }
+        ]
+      },
+      {
+        id: 'appetizers',
+        nameAr: 'المقبلات الشامية',
+        nameEn: 'LEVANTINE MEZZE',
+        subtitleAr: 'أطباق مشاركة فنية بنكهات الأرض والزيتون',
+        displayOrder: 5,
+        orbitRadiusX: 42,
+        orbitRadiusY: 22,
+        rotationSpeed: 0.21,
+        accentColor: '#3D4A3A',
+        dishes: [
+          {
+            id: 'ap-1',
+            categoryId: 'appetizers',
+            nameAr: 'حمص بالكمأة السوداء والبندق',
+            descriptionAr: 'حمص كريمي مخفوق بالطحينة الحجرية، زيت الكمأة البيضاء، وبندق محمص مقرمش مع خبز دافئ.',
+            price: 38,
+            currency: 'ر.س',
+            calories: '420 سعرة',
+            prepTime: '7 دقائق',
+            dietary: ['نباتي صرف', 'يحتوي مكسرات'],
+            modifiers: ['مع خبز التنور', 'مع شرائح خضار طازجة'],
+            plateTone: '#EFEAD9',
+            rimColor: '#A68D60',
+            image: 'https://images.unsplash.com/photo-1577805947697-89e18249d767?auto=format&fit=crop&w=600&q=85'
+          },
+          {
+            id: 'ap-2',
+            categoryId: 'appetizers',
+            nameAr: 'كبة التين والجوز المقرمشة',
+            descriptionAr: 'أقراص كبة ذهبية محشوة بلحم الضأن والتين البري والجوز، تقدم مع غموس اللبن بالنعناع.',
+            price: 44,
+            currency: 'ر.س',
+            calories: '480 سعرة',
+            prepTime: '10 دقائق',
+            dietary: ['توقيع الشيف'],
+            modifiers: ['4 قطع', 'إضافة دبس رمان'],
+            plateTone: '#EBE1D5',
+            rimColor: '#9E6846',
+            image: 'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=600&q=85'
+          },
+          {
+            id: 'ap-3',
+            categoryId: 'appetizers',
+            nameAr: 'متبل الشمندر المشوي والجبن',
+            descriptionAr: 'شمندر مشوي بالملح البحري ممزوج بالطحينة واللبن، يعلوه فتات جبن الفيتا وبذور اليقطين.',
+            price: 36,
+            currency: 'ر.س',
+            calories: '360 سعرة',
+            prepTime: '6 دقائق',
+            dietary: ['نباتي', 'خالي من الغلوتين'],
+            modifiers: ['مع خبز محمص', 'بدون جبن فيتا'],
+            plateTone: '#F0DFE2',
+            rimColor: '#9E4758',
+            image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=85'
+          },
+          {
+            id: 'ap-4',
+            categoryId: 'appetizers',
+            nameAr: 'بطاطس الحرة بالكزبرة والليمون',
+            descriptionAr: 'مكعبات بطاطس مقرمشة مطهية بزيت الزيتون مع الثوم المحمص، الكزبرة الخضراء، وعصير الليمون.',
+            price: 32,
+            currency: 'ر.س',
+            calories: '410 سعرة',
+            prepTime: '8 دقائق',
+            dietary: ['نباتي صرف'],
+            modifiers: ['حرارة متوسطة', 'بدون فلفل حار'],
+            plateTone: '#EFE7D8',
+            rimColor: '#B88B4A',
+            image: 'https://images.unsplash.com/photo-1576107232684-1279f3908594?auto=format&fit=crop&w=600&q=85'
+          }
+        ]
+      },
+      {
+        id: 'desserts',
+        nameAr: 'الحلويات المبتكرة',
+        nameEn: 'SCULPTED DESSERTS',
+        subtitleAr: 'توازن شاعري بين الحلاوة الشرقية والتقنيات الحديثة',
+        displayOrder: 6,
+        orbitRadiusX: 40,
+        orbitRadiusY: 20,
+        rotationSpeed: -0.17,
+        accentColor: '#9E6240',
+        dishes: [
+          {
+            id: 'ds-1',
+            categoryId: 'desserts',
+            nameAr: 'تشيزكيك الفستق وماء الورد',
+            descriptionAr: 'تشيزكيك مخبوز على الطريقة الباسكية بقلب كريمي من الفستق الحلبي وطبقة خفيفة من هلام ماء الورد.',
+            price: 46,
+            currency: 'ر.س',
+            calories: '520 سعرة',
+            prepTime: '8 دقائق',
+            dietary: ['يحتوي مكسرات', 'الأكثر طلباً'],
+            modifiers: ['مع صوص فستق دافئ', 'بدون ماء ورد'],
+            plateTone: '#E7ECD9',
+            rimColor: '#768F5B',
+            image: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=600&q=85'
+          },
+          {
+            id: 'ds-2',
+            categoryId: 'desserts',
+            nameAr: 'ميل فوي الهيل والزعفران',
+            descriptionAr: 'رقائق عجينة هشة مكرملة بينها كريمة الهيل الأخضر والزعفران، تزينها خيوط الذهب الصالح للأكل.',
+            price: 48,
+            currency: 'ر.س',
+            calories: '470 سعرة',
+            prepTime: '9 دقائق',
+            dietary: ['توقيع نَوى'],
+            modifiers: ['تقديم مع آيس كريم فانيليا'],
+            plateTone: '#F2EAD8',
+            rimColor: '#C49545',
+            image: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=600&q=85'
+          },
+          {
+            id: 'ds-3',
+            categoryId: 'desserts',
+            nameAr: 'تارت التمر المجدول والطحينة',
+            descriptionAr: 'قاعدة بسكويت الشوفان المملح، غناش الشوكولاتة الداكنة 70% مع التمر المجدول وكراميل الطحينة.',
+            price: 42,
+            currency: 'ر.س',
+            calories: '490 سعرة',
+            prepTime: '7 دقائق',
+            dietary: ['نباتي'],
+            modifiers: ['مع رشة ملح بحري', 'دافئ قليلاً'],
+            plateTone: '#E8DFD5',
+            rimColor: '#7A5942',
+            image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=85'
+          },
+          {
+            id: 'ds-4',
+            categoryId: 'desserts',
+            nameAr: 'بافلوفا التين والتوت البري',
+            descriptionAr: 'سحابة ميرينغ مقرمشة من الخارج وطرية من الداخل مع كريمة الماسكاربوني والتين الطازج.',
+            price: 44,
+            currency: 'ر.س',
+            calories: '410 سعرة',
+            prepTime: '8 دقائق',
+            dietary: ['خالي من الغلوتين'],
+            modifiers: ['صوص توت إضافي'],
+            plateTone: '#F1E4E6',
+            rimColor: '#A85C6A',
+            image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=600&q=85'
+          }
+        ]
+      },
+      {
+        id: 'beverages',
+        nameAr: 'المشروبات النباتية',
+        nameEn: 'BOTANICAL ELIXIRS',
+        subtitleAr: 'خلاصات أعشاب طبيعية وفواكه معصورة على البارد',
+        displayOrder: 7,
+        orbitRadiusX: 38,
+        orbitRadiusY: 20,
+        rotationSpeed: 0.25,
+        accentColor: '#4A6B5D',
+        dishes: [
+          {
+            id: 'bv-1',
+            categoryId: 'beverages',
+            nameAr: 'إكسير الكركديه والورد الدمشقي',
+            descriptionAr: 'منقوع الكركديه البارد مع خلاصة الورد الدمشقي، شريحة برتقال مجفف، ولمسة من العسل الجبلي.',
+            price: 28,
+            currency: 'ر.س',
+            calories: '110 سعرة',
+            prepTime: '4 دقائق',
+            dietary: ['نباتي صرف', 'بدون سكر مضاف'],
+            modifiers: ['ثلج معتدل', 'ثلج قليل'],
+            plateTone: '#F2DFE1',
+            rimColor: '#A33E4C',
+            image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=85'
+          },
+          {
+            id: 'bv-2',
+            categoryId: 'beverages',
+            nameAr: 'ليموناضة الميرمية والزنجبيل',
+            descriptionAr: 'عصير ليمون عضوي طازج، أوراق الميرمية البرية، زنجبيل أخضر معصور، ومياه غازية طبيعية.',
+            price: 26,
+            currency: 'ر.س',
+            calories: '95 سعرة',
+            prepTime: '4 دقائق',
+            dietary: ['منعش طبيعي'],
+            modifiers: ['مياه غازية', 'مياه عادية'],
+            plateTone: '#E5EDE2',
+            rimColor: '#5D8266',
+            image: 'https://images.unsplash.com/photo-1556881286-fc6915169721?auto=format&fit=crop&w=600&q=85'
+          },
+          {
+            id: 'bv-3',
+            categoryId: 'beverages',
+            nameAr: 'ماتشا الهيل وحليب الشوفان',
+            descriptionAr: 'شاي ماتشا احتفالي ياباني مخفوق مع حليب الشوفان الكريمي وخلاصة الهيل الأخضر المحمص.',
+            price: 32,
+            currency: 'ر.س',
+            calories: '140 سعرة',
+            prepTime: '5 دقائق',
+            dietary: ['نباتي صرف'],
+            modifiers: ['بارد مع ثلج', 'دافئ'],
+            plateTone: '#DFE9D9',
+            rimColor: '#527848',
+            image: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&w=600&q=85'
+          },
+          {
+            id: 'bv-4',
+            categoryId: 'beverages',
+            nameAr: 'قهوة مقطرة بلمسة البرغموت',
+            descriptionAr: 'محصول قهوة إثيوبي مختص محمص بعناية، مقطر على الثلج مع قشور البرغموت العطرية.',
+            price: 30,
+            currency: 'ر.س',
+            calories: '15 سعرة',
+            prepTime: '5 دقائق',
+            dietary: ['خالي من السكر'],
+            modifiers: ['تقديم بارد (V60 Iced)', 'تقديم ساخن'],
+            plateTone: '#E8E0D5',
+            rimColor: '#755840',
+            image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=85'
+          }
+        ]
+      }
+    ];
+
+    /**
+     * 3. STATE, CACHED GEOMETRY & SPRING PHYSICS VARIABLES
+     */
+    const HOLD_THRESHOLD_MS = 340;
+    const SWIPE_CANCEL_HOLD_PX = 8;
+
+    const state = {
+      orbitScale: 1.0,
+      speedScale: 1.0,
+      isMotionPaused: false,
+      showCalibration: false,
+      categoryAngles: {},
+      categoryVelocities: {},
+      categorySnapTargets: {}, // Soft Magnetic Snap target angles after user touch spin
+      categoryVisible: {},     // IntersectionObserver visibility map
+      hoveredCategoryId: null,
+      spinningCategoryId: null,
+      inspectedDish: null,
+      selectedModifiers: {},
+      tapFeedbackDishId: null,
+      mobileCartExpanded: false,
+      cartItems: [
+        {
+          dish: MENU_CATEGORIES[0].dishes[0],
+          modifier: MENU_CATEGORIES[0].dishes[0].modifiers[0],
+          quantity: 1
+        }
+      ],
+      // Spring-Mass 3D Drag & Return Flight State
+      dragState: {
+        phase: 'idle', // 'idle' | 'holding' | 'dragging' | 'returning'
+        dish: null,
+        category: null,
+        originX: 0,
+        originY: 0,
+        targetX: 0,
+        targetY: 0,
+        springX: 0,
+        springY: 0,
+        vx: 0,
+        vy: 0,
+        tiltX: 0,
+        tiltY: 0,
+        holdProgress: 0,
+        isOverCart: false
+      },
+      pointer: {
+        mode: 'idle', // 'idle' | 'dish-hold-candidate' | 'orbit-spin' | 'dish-drag'
+        pointerId: null,
+        dish: null,
+        dishIndex: null,
+        category: null,
+        startX: 0,
+        startY: 0,
+        lastX: 0,
+        lastY: 0,
+        lastMoveTime: 0,
+        currentX: 0,
+        currentY: 0,
+        velocityRadPerSec: 0
+      },
+      // Cached Drop Zone Bounding Boxes (Zero Layout Thrashing during pointermove)
+      cachedDropRects: [],
+      cachedTargetCenter: { x: 160, y: 300 }
+    };
+
+    MENU_CATEGORIES.forEach((cat, idx) => {
+      state.categoryAngles[cat.id] = idx * 0.45;
+      state.categoryVelocities[cat.id] = 0;
+      state.categorySnapTargets[cat.id] = null;
+      state.categoryVisible[cat.id] = true;
+    });
+
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      state.isMotionPaused = true;
+    }
+
+    const domCache = {
+      categories: {}
+    };
+
+    let holdTimerId = null;
+    let holdAnimFrameId = null;
+    let holdStartTimestamp = 0;
+    let toastTimerId = null;
+    let tapFeedbackTimerId = null;
+
+    /**
+     * 4. ZERO-LAYOUT-THRASHING GEOMETRY CACHE
+     * Called only on pointerdown, window resize, or scroll — NEVER inside pointermove!
+     */
+    function refreshDropZoneBoundsCache() {
+      const rects = [];
+      const desktopEl = document.getElementById('desktop-cart-vessel');
+      if (desktopEl) {
+        const r = desktopEl.getBoundingClientRect();
+        if (r.width > 0 && r.height > 0) {
+          rects.push(r);
+          state.cachedTargetCenter = {
+            x: r.left + r.width / 2,
+            y: r.top + Math.min(r.height / 2, 175)
+          };
+        }
+      }
+      const mobileEl = document.getElementById('mobile-cart-dock');
+      if (mobileEl) {
+        const r = mobileEl.getBoundingClientRect();
+        if (r.width > 0 && r.height > 0) {
+          rects.push(r);
+          state.cachedTargetCenter = {
+            x: r.left + r.width / 2,
+            y: r.top + r.height / 2
+          };
+        }
+      }
+      state.cachedDropRects = rects;
+    }
+
+    window.addEventListener('resize', refreshDropZoneBoundsCache, { passive: true });
+    window.addEventListener('scroll', refreshDropZoneBoundsCache, { passive: true });
+
+    function checkPointInsideOrderAreaCached(clientX, clientY) {
+      const pad = 24;
+      for (let i = 0; i < state.cachedDropRects.length; i++) {
+        const r = state.cachedDropRects[i];
+        if (
+          clientX >= r.left - pad &&
+          clientX <= r.right + pad &&
+          clientY >= r.top - pad &&
+          clientY <= r.bottom + pad
+        ) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    /**
+     * Helper to normalize angle difference into [-PI, PI] for shortest magnetic snap
+     */
+    function normalizeAngleDiff(target, current) {
+      let diff = (target - current) % (Math.PI * 2);
+      if (diff > Math.PI) diff -= Math.PI * 2;
+      if (diff < -Math.PI) diff += Math.PI * 2;
+      return diff;
+    }
+
+    /**
+     * Compute nearest magnetic front-snap angle where a dish sits at sin(theta) = 1 (theta = PI/2)
+     */
+    function computeNearestFrontSnapAngle(currentAngle, totalDishes) {
+      const step = (Math.PI * 2) / totalDishes;
+      const k = Math.round((currentAngle - Math.PI / 2) / step);
+      return Math.PI / 2 + k * step;
+    }
+
+    /**
+     * 5. BUILD INITIAL DOM FOR ALL 7 SPATIAL CATEGORIES + INTERSECTION OBSERVER
+     */
+    function buildCategoriesDOM() {
+      const grid = document.getElementById('categories-grid');
+      grid.innerHTML = '';
+
+      const observer = ('IntersectionObserver' in window)
+        ? new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              const catId = entry.target.getAttribute('data-cat-id');
+              if (catId) {
+                state.categoryVisible[catId] = entry.isIntersecting;
+              }
+            });
+          }, { rootMargin: '120px' })
+        : null;
+
+      MENU_CATEGORIES.forEach((category, catIdx) => {
+        const totalDishes = category.dishes.length;
+
+        const article = document.createElement('article');
+        article.className = 'spatial-orbit-stage';
+        article.setAttribute('data-cat-id', category.id);
+        article.innerHTML = `
+          <div class="axis-hairline" style="background: linear-gradient(to bottom, transparent, ${category.accentColor}, transparent);"></div>
+
+          <!-- 1. CATEGORY SPATIAL HEADER -->
+          <div class="cat-header">
+            <div class="cat-meta-row">
+              <span class="cat-index font-editorial">0${catIdx + 1}</span>
+              <span class="cat-dot" style="background-color: ${category.accentColor};"></span>
+              <span class="cat-name-en font-editorial">${category.nameEn}</span>
+            </div>
+            <h2 class="cat-name-ar font-arabic-display">${category.nameAr}</h2>
+            <p class="cat-subtitle">${category.subtitleAr}</p>
+          </div>
+
+          <!-- 2. COMPACT 2.5D ROTATIONAL ORBIT STAGE -->
+          <div class="orbit-viewport">
+            <svg viewBox="0 0 180 120" data-role="orbit-svg" class="orbit-svg" style="opacity:0.55;">
+              <ellipse data-role="ellipse-outer" cx="90" cy="64" rx="64" ry="34" fill="none" stroke="${category.accentColor}" stroke-width="0.75" stroke-dasharray="3 4" opacity="0.45"></ellipse>
+              <ellipse data-role="ellipse-inner" cx="90" cy="64" rx="42" ry="22" fill="none" stroke="#BDB5A6" stroke-width="0.6" opacity="0.4"></ellipse>
+            </svg>
+
+            <div data-role="spin-badge" class="spin-badge hidden">
+              <span class="spin-badge-inner">
+                <svg class="spin-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                تدوير مغناطيسي
+              </span>
+            </div>
+
+            <div data-role="dishes-stage" class="dishes-stage"></div>
+          </div>
+
+          <!-- 3. FOCUSED DISH CALLOUT & LOCAL ORBIT CONTROLS -->
+          <div class="cat-footer">
+            <div class="front-callout">
+              <span data-role="front-name" class="front-dish-title"></span>
+              <span data-role="front-desc" class="front-dish-desc"></span>
+            </div>
+
+            <div data-role="tap-notice" class="tap-micro-notice">
+              اسحب للتدوير • المس مطولاً للطلب
+            </div>
+
+            <div class="orbit-controls-bar">
+              <button type="button" data-action="step-right" class="icon-circle-btn" title="تدوير مدار هذه الفئة">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+              </button>
+
+              <div data-role="dots-container" class="dots-row"></div>
+
+              <div style="display:flex;align-items:center;gap:0.15rem;">
+                <button type="button" data-action="inspect-front" class="icon-circle-btn" title="تفاصيل ومكونات الطبق">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                </button>
+                <button type="button" data-action="step-left" class="icon-circle-btn" title="تدوير مدار هذه الفئة">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        if (observer) observer.observe(article);
+
+        const dishesStage = article.querySelector('[data-role="dishes-stage"]');
+        const dotsContainer = article.querySelector('[data-role="dots-container"]');
+
+        const catCache = {
+          article,
+          orbitSvg: article.querySelector('[data-role="orbit-svg"]'),
+          ellipseOuter: article.querySelector('[data-role="ellipse-outer"]'),
+          ellipseInner: article.querySelector('[data-role="ellipse-inner"]'),
+          spinBadge: article.querySelector('[data-role="spin-badge"]'),
+          frontName: article.querySelector('[data-role="front-name"]'),
+          frontDesc: article.querySelector('[data-role="front-desc"]'),
+          tapNotice: article.querySelector('[data-role="tap-notice"]'),
+          dots: [],
+          dishes: {},
+          currentFrontDish: category.dishes[0],
+          lastFrontDishId: category.dishes[0].id
+        };
+
+        category.dishes.forEach((dish, dishIdx) => {
+          const dishWrapper = document.createElement('div');
+          dishWrapper.className = 'spatial-dish-node';
+          dishWrapper.title = `${dish.nameAr} — ${dish.price} ${dish.currency}`;
+
+          dishWrapper.innerHTML = `
+            <div data-role="plate" class="dish-ceramic-plate"
+                 style="background: radial-gradient(circle at 30% 25%, #FFFFFF 0%, ${dish.plateTone} 72%, ${dish.rimColor} 100%);">
+              <div class="dish-rim-inner">
+                <img src="${dish.image}" alt="${dish.nameAr}" draggable="false" class="dish-img" />
+                <div class="dish-gloss"></div>
+              </div>
+
+              <div data-role="price-pill" class="dish-price-pill hidden"
+                   style="background-color: #1F241F; color: #F7F4EE; border-color: ${dish.rimColor};">
+                <span>${dish.price}</span>
+                <span style="font-size:0.5rem;font-weight:400;opacity:0.82;">${dish.currency}</span>
+              </div>
+
+              <svg data-role="hold-svg" class="hold-ring-svg hidden" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(198, 93, 59, 0.22)" stroke-width="4"></circle>
+                <circle data-role="hold-circle" cx="50" cy="50" r="46" fill="none" stroke="#C65D3B" stroke-width="4" stroke-dasharray="289" stroke-dashoffset="289" stroke-linecap="round"></circle>
+              </svg>
+              <div data-role="hold-badge" class="hold-float-badge hidden">
+                استمر بالضغط للالتقاط...
+              </div>
+            </div>
+          `;
+
+          dishWrapper.addEventListener('pointerdown', (e) => {
+            handleDishPointerDown(e, dish, category, dishIdx);
+          });
+
+          dishesStage.appendChild(dishWrapper);
+
+          catCache.dishes[dish.id] = {
+            wrapper: dishWrapper,
+            plate: dishWrapper.querySelector('[data-role="plate"]'),
+            pricePill: dishWrapper.querySelector('[data-role="price-pill"]'),
+            holdSvg: dishWrapper.querySelector('[data-role="hold-svg"]'),
+            holdCircle: dishWrapper.querySelector('[data-role="hold-circle"]'),
+            holdBadge: dishWrapper.querySelector('[data-role="hold-badge"]')
+          };
+
+          const dotBtn = document.createElement('button');
+          dotBtn.type = 'button';
+          dotBtn.className = 'orbit-dot';
+          dotBtn.title = dish.nameAr;
+          dotBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            focusDishToFront(category, dishIdx, totalDishes);
+          });
+          dotsContainer.appendChild(dotBtn);
+          catCache.dots.push(dotBtn);
+        });
+
+        article.addEventListener('mouseenter', () => {
+          state.hoveredCategoryId = category.id;
+          updateCategoryCardStyles(category);
+        });
+        article.addEventListener('mouseleave', () => {
+          if (state.hoveredCategoryId === category.id) {
+            state.hoveredCategoryId = null;
+            updateCategoryCardStyles(category);
+          }
+        });
+        article.addEventListener('pointerdown', (e) => {
+          handleStagePointerDown(e, category);
+        });
+        article.addEventListener('wheel', (e) => {
+          if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+            rotateSingleCategory(category.id, e.deltaX * 0.008);
+          }
+        }, { passive: true });
+
+        article.querySelector('[data-action="step-right"]').addEventListener('click', (e) => {
+          e.stopPropagation();
+          stepCategoryByOneDish(category, 1);
+        });
+        article.querySelector('[data-action="step-left"]').addEventListener('click', (e) => {
+          e.stopPropagation();
+          stepCategoryByOneDish(category, -1);
+        });
+        article.querySelector('[data-action="inspect-front"]').addEventListener('click', (e) => {
+          e.stopPropagation();
+          openInspectModal(catCache.currentFrontDish);
+        });
+
+        grid.appendChild(article);
+        domCache.categories[category.id] = catCache;
+        updateCategoryCardStyles(category);
+      });
+    }
+
+    function updateCategoryCardStyles(category) {
+      const cache = domCache.categories[category.id];
+      if (!cache) return;
+
+      const isHovered = state.hoveredCategoryId === category.id;
+      const isActivelySpinning = state.spinningCategoryId === category.id;
+
+      cache.article.style.background = (isHovered || isActivelySpinning)
+        ? 'linear-gradient(180deg, rgba(239,236,228,0.96) 0%, rgba(247,244,238,0.55) 55%, rgba(239,236,228,0.94) 100%)'
+        : 'linear-gradient(180deg, rgba(239,236,228,0.55) 0%, rgba(247,244,238,0.2) 55%, rgba(239,236,228,0.55) 100%)';
+
+      cache.article.style.border = isActivelySpinning
+        ? `1.5px solid ${category.accentColor}`
+        : isHovered
+        ? '1px solid rgba(61, 74, 58, 0.3)'
+        : '1px solid rgba(212, 204, 190, 0.65)';
+
+      cache.article.style.boxShadow = (isHovered || isActivelySpinning)
+        ? '0 20px 40px -24px rgba(31, 36, 31, 0.16)'
+        : 'none';
+
+      cache.orbitSvg.style.opacity = isActivelySpinning ? '0.96' : '0.55';
+      cache.ellipseOuter.setAttribute('stroke-width', isActivelySpinning ? '1.4' : '0.75');
+      cache.ellipseOuter.setAttribute('stroke-dasharray', isActivelySpinning ? '5 3' : '3 4');
+      cache.ellipseOuter.setAttribute('opacity', isActivelySpinning ? '0.88' : '0.45');
+
+      cache.ellipseInner.setAttribute('stroke', isActivelySpinning ? category.accentColor : '#BDB5A6');
+      cache.ellipseInner.setAttribute('stroke-width', isActivelySpinning ? '1.1' : '0.6');
+
+      if (isActivelySpinning) {
+        cache.spinBadge.classList.remove('hidden');
+      } else {
+        cache.spinBadge.classList.add('hidden');
+      }
+    }
+
+    /**
+     * 6. ZERO-THRASH 120HZ ORBIT RENDERER (PURE GPU TRANSFORMS)
+     */
+    function renderAllCategoryOrbits(forceAll = false) {
+      MENU_CATEGORIES.forEach((category) => {
+        if (!forceAll && !state.categoryVisible[category.id]) return;
+
+        const cache = domCache.categories[category.id];
+        if (!cache) return;
+
+        const currentCatAngle = state.categoryAngles[category.id] || 0;
+        const totalDishes = category.dishes.length;
+        const rx = category.orbitRadiusX * state.orbitScale;
+        const ry = category.orbitRadiusY * state.orbitScale;
+
+        const positioned = category.dishes.map((dish, index) => {
+          const theta = currentCatAngle + (index / totalDishes) * Math.PI * 2;
+          const x = Math.cos(theta) * rx;
+          const y = Math.sin(theta) * ry;
+          const depth = Math.sin(theta);
+          const normalizedDepth = (depth + 1) * 0.5;
+          return { dish, index, x, y, depth, normalizedDepth };
+        });
+
+        const frontDishObj = positioned.reduce(
+          (best, curr) => (curr.depth > best.depth ? curr : best),
+          positioned[0]
+        );
+        cache.currentFrontDish = frontDishObj.dish;
+
+        // Play subtle ceramic tick when user is actively spinning or snapping and a new dish takes the front spot
+        if (cache.lastFrontDishId !== frontDishObj.dish.id) {
+          cache.lastFrontDishId = frontDishObj.dish.id;
+          const isUserSpinOrMomentum =
+            state.spinningCategoryId === category.id ||
+            Math.abs(state.categoryVelocities[category.id] || 0) > 0.25 ||
+            state.categorySnapTargets[category.id] !== null;
+
+          if (isUserSpinOrMomentum) {
+            SoundEngine.playOrbitTick();
+          }
+        }
+
+        positioned.forEach(({ dish, index, x, y, normalizedDepth }) => {
+          const dNode = cache.dishes[dish.id];
+          if (!dNode) return;
+
+          const isFront = frontDishObj.dish.id === dish.id;
+          const isBeingHeld = state.dragState.phase === 'holding' && state.dragState.dish?.id === dish.id;
+          const isFloatingOut =
+            (state.dragState.phase === 'dragging' || state.dragState.phase === 'returning') &&
+            state.dragState.dish?.id === dish.id;
+
+          // Pure scale3d + translate3d (No width/height class toggling = zero layout reflow!)
+          const baseScale = isFront ? 1.04 : 0.65 + normalizedDepth * 0.26;
+          const scale = isBeingHeld ? baseScale * 1.1 : baseScale;
+          const opacity = isFloatingOut ? 0.18 : 0.46 + normalizedDepth * 0.54;
+          const zIndex = isBeingHeld ? 35 : Math.round(normalizedDepth * 20) + 2;
+
+          dNode.wrapper.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) scale3d(${scale.toFixed(3)}, ${scale.toFixed(3)}, 1)`;
+          dNode.wrapper.style.zIndex = zIndex;
+          dNode.wrapper.style.opacity = opacity.toFixed(3);
+
+          dNode.plate.style.boxShadow = isBeingHeld
+            ? '0 22px 36px -8px rgba(198, 93, 59, 0.45), 0 0 0 2.5px rgba(198, 93, 59, 0.5)'
+            : isFront
+            ? '0 18px 30px -10px rgba(31, 36, 31, 0.28), 0 4px 10px -2px rgba(31, 36, 31, 0.12), inset 0 1px 3px rgba(255,255,255,0.9)'
+            : '0 8px 16px -6px rgba(31, 36, 31, 0.16), inset 0 1px 2px rgba(255,255,255,0.7)';
+
+          if (isFront) {
+            dNode.pricePill.classList.remove('hidden');
+            dNode.pricePill.style.backgroundColor = isBeingHeld ? '#C65D3B' : '#1F241F';
+          } else {
+            dNode.pricePill.classList.add('hidden');
+          }
+
+          if (isBeingHeld) {
+            dNode.holdSvg.classList.remove('hidden');
+            dNode.holdBadge.classList.remove('hidden');
+            const offset = 289 - (289 * state.dragState.holdProgress) / 100;
+            dNode.holdCircle.setAttribute('stroke-dashoffset', offset.toFixed(1));
+          } else {
+            dNode.holdSvg.classList.add('hidden');
+            dNode.holdBadge.classList.add('hidden');
+          }
+
+          const dot = cache.dots[index];
+          if (dot) {
+            dot.className = isFront ? 'orbit-dot active' : 'orbit-dot';
+          }
+        });
+
+        if (cache.frontName.textContent !== frontDishObj.dish.nameAr) {
+          cache.frontName.textContent = frontDishObj.dish.nameAr;
+          cache.frontDesc.textContent = frontDishObj.dish.descriptionAr;
+        }
+
+        if (state.tapFeedbackDishId === frontDishObj.dish.id) {
+          cache.tapNotice.className = 'tap-micro-notice active-alert';
+          cache.tapNotice.textContent = 'المس الطبق مطولاً لالتقاطه وسحبه للسلة';
+        } else {
+          cache.tapNotice.className = 'tap-micro-notice';
+          cache.tapNotice.textContent = 'اسحب للتدوير • المس مطولاً للطلب';
+        }
+      });
+    }
+
+    /**
+     * 7. 120HZ MASTER PHYSICS LOOP: ORBITS + MAGNETIC SNAP + 3D SPRING DRAG
+     */
+    let lastFrameTime = performance.now();
+
+    function masterPhysicsLoop(now) {
+      const dt = Math.min((now - lastFrameTime) / 1000, 0.05);
+      lastFrameTime = now;
+
+      // A. Update All 7 Category Orbits (Inertia + Soft Magnetic Front Snap + Ambient Rotation)
+      MENU_CATEGORIES.forEach((cat) => {
+        if (!state.categoryVisible[cat.id]) return;
+
+        const isBeingSpunDirectly =
+          state.pointer.mode === 'orbit-spin' && state.pointer.category?.id === cat.id;
+
+        const isDishHeldOrDraggedInCat =
+          (state.pointer.mode === 'dish-hold-candidate' || state.pointer.mode === 'dish-drag') &&
+          state.pointer.category?.id === cat.id;
+
+        if (isBeingSpunDirectly || isDishHeldOrDraggedInCat) {
+          return;
+        }
+
+        const vel = state.categoryVelocities[cat.id] || 0;
+        const snapTarget = state.categorySnapTargets[cat.id];
+
+        // 1. High-velocity momentum phase after user touch spin
+        if (Math.abs(vel) > 0.22) {
+          state.categoryAngles[cat.id] = (state.categoryAngles[cat.id] || 0) + vel * dt;
+          state.categoryVelocities[cat.id] = vel * Math.pow(0.91, dt * 60);
+          // Continuously update magnetic snap target to the nearest front dish
+          state.categorySnapTargets[cat.id] = computeNearestFrontSnapAngle(
+            state.categoryAngles[cat.id],
+            cat.dishes.length
+          );
+          return;
+        }
+
+        // 2. Soft Magnetic Front-Dish Spring Snap phase (settles dish cleanly at sin(theta)=1)
+        if (snapTarget !== null && snapTarget !== undefined) {
+          const current = state.categoryAngles[cat.id] || 0;
+          const diff = normalizeAngleDiff(snapTarget, current);
+          if (Math.abs(diff) > 0.003) {
+            state.categoryAngles[cat.id] = current + diff * Math.min(1, dt * 11.5);
+            state.categoryVelocities[cat.id] = 0;
+            return;
+          } else {
+            state.categoryAngles[cat.id] = snapTarget;
+            state.categorySnapTargets[cat.id] = null;
+            state.categoryVelocities[cat.id] = 0;
+          }
+        }
+
+        // 3. Gentle ambient orbital rotation when not paused or hovered
+        const isPinned =
+          state.hoveredCategoryId === cat.id ||
+          (state.inspectedDish && state.inspectedDish.categoryId === cat.id);
+
+        if (!state.isMotionPaused && !isPinned) {
+          state.categoryAngles[cat.id] =
+            (state.categoryAngles[cat.id] || 0) + cat.rotationSpeed * state.speedScale * dt;
+        }
+      });
+
+      // B. Update 3D Spring-Mass Drag & Return Flight Physics
+      updateSpringDragPhysics(dt);
+
+      // C. Render Visible Orbits
+      renderAllCategoryOrbits(false);
+
+      requestAnimationFrame(masterPhysicsLoop);
+    }
+
+    /**
+     * Critically-damped Spring-Mass 3D Follower + Magnetic Order Vessel Pull + Return Flight
+     */
+    function updateSpringDragPhysics(dt) {
+      const d = state.dragState;
+      if (d.phase !== 'dragging' && d.phase !== 'returning') return;
+
+      let goalX = d.targetX;
+      let goalY = d.targetY;
+
+      if (d.phase === 'dragging') {
+        // Magnetic pull toward Order Vessel when pointer approaches within 150px
+        const tc = state.cachedTargetCenter;
+        const distToVessel = Math.hypot(d.targetX - tc.x, d.targetY - tc.y);
+        if (d.isOverCart) {
+          goalX = d.targetX * 0.65 + tc.x * 0.35;
+          goalY = d.targetY * 0.65 + tc.y * 0.35;
+        } else if (distToVessel < 155) {
+          const pullStrength = (1 - distToVessel / 155) * 0.24;
+          goalX = d.targetX + (tc.x - d.targetX) * pullStrength;
+          goalY = d.targetY + (tc.y - d.targetY) * pullStrength;
+        }
+      } else if (d.phase === 'returning') {
+        // Track exact live coordinates of the dish's moving home node in its orbit
+        const catCache = domCache.categories[d.category?.id];
+        const dishNode = catCache?.dishes[d.dish?.id]?.wrapper;
+        if (dishNode) {
+          const r = dishNode.getBoundingClientRect();
+          goalX = r.left + r.width / 2;
+          goalY = r.top + r.height / 2;
+        } else {
+          goalX = d.originX;
+          goalY = d.originY;
+        }
+      }
+
+      // Spring constants (stiff & responsive at 120Hz)
+      const stiffness = d.phase === 'returning' ? 320 : 420;
+      const damping = d.phase === 'returning' ? 26 : 30;
+
+      const ax = (goalX - d.springX) * stiffness - d.vx * damping;
+      const ay = (goalY - d.springY) * stiffness - d.vy * damping;
+
+      d.vx += ax * dt;
+      d.vy += ay * dt;
+      d.springX += d.vx * dt;
+      d.springY += d.vy * dt;
+
+      // Dynamic 3D velocity tilt (gives physical mass & air resistance feel)
+      const targetTiltY = Math.max(-22, Math.min(22, d.vx * 0.018));
+      const targetTiltX = Math.max(-22, Math.min(22, -d.vy * 0.018));
+      d.tiltX += (targetTiltX - d.tiltX) * Math.min(1, dt * 18);
+      d.tiltY += (targetTiltY - d.tiltY) * Math.min(1, dt * 18);
+
+      // Check completion of smooth return flight
+      if (d.phase === 'returning') {
+        const distHome = Math.hypot(goalX - d.springX, goalY - d.springY);
+        if (distHome < 8 && Math.hypot(d.vx, d.vy) < 60) {
+          d.phase = 'idle';
+          d.dish = null;
+          d.category = null;
+          document.getElementById('drag-overlay').classList.add('hidden');
+          renderCartDOM();
+          return;
+        }
+      }
+
+      // Render Floating 3D Sculpture & SVG Tether
+      const node = document.getElementById('floating-drag-node');
+      const scale = d.phase === 'returning' ? 0.85 : d.isOverCart ? 1.16 : 1.08;
+      node.style.transform = `translate3d(${d.springX.toFixed(1)}px, ${d.springY.toFixed(1)}px, 0) rotateX(${d.tiltX.toFixed(1)}deg) rotateY(${d.tiltY.toFixed(1)}deg) scale3d(${scale}, ${scale}, 1)`;
+
+      const originLine = document.getElementById('tether-origin-line');
+      originLine.setAttribute('x1', d.originX.toFixed(1));
+      originLine.setAttribute('y1', d.originY.toFixed(1));
+      originLine.setAttribute('x2', d.springX.toFixed(1));
+      originLine.setAttribute('y2', d.springY.toFixed(1));
+
+      const tc = state.cachedTargetCenter;
+      const curve = document.getElementById('tether-target-curve');
+      const qx = (d.springX + tc.x) * 0.5;
+      const qy = Math.min(d.springY, tc.y) - 65;
+      curve.setAttribute('d', `M ${d.springX.toFixed(1)} ${d.springY.toFixed(1)} Q ${qx.toFixed(1)} ${qy.toFixed(1)} ${tc.x.toFixed(1)} ${tc.y.toFixed(1)}`);
+      curve.setAttribute('stroke', d.isOverCart ? '#C65D3B' : '#3D4A3A');
+      curve.setAttribute('stroke-width', d.isOverCart ? '2.6' : '1.5');
+    }
+
+    function stepCategoryByOneDish(category, dir) {
+      const totalDishes = category.dishes.length;
+      const step = ((Math.PI * 2) / totalDishes) * dir;
+      const base = state.categorySnapTargets[category.id] ?? state.categoryAngles[category.id] ?? 0;
+      state.categoryVelocities[category.id] = 0;
+      state.categorySnapTargets[category.id] = computeNearestFrontSnapAngle(base + step, totalDishes);
+    }
+
+    function rotateSingleCategory(categoryId, deltaAngle) {
+      const cat = MENU_CATEGORIES.find((c) => c.id === categoryId);
+      state.categoryAngles[categoryId] = (state.categoryAngles[categoryId] || 0) + deltaAngle;
+      if (cat) {
+        state.categorySnapTargets[categoryId] = computeNearestFrontSnapAngle(
+          state.categoryAngles[categoryId],
+          cat.dishes.length
+        );
+      }
+    }
+
+    function focusDishToFront(category, dishIndex, totalDishes) {
+      const dishBaseAngle = (dishIndex / totalDishes) * Math.PI * 2;
+      const desiredAngle = Math.PI / 2 - dishBaseAngle;
+      const current = state.categoryAngles[category.id] || 0;
+      state.categoryVelocities[category.id] = 0;
+      state.categorySnapTargets[category.id] = current + normalizeAngleDiff(desiredAngle, current);
+    }
+
+    /**
+     * 8. UNIFIED TOUCH ORBIT SPIN & LONG-PRESS HOLD-AND-DROP GESTURE ENGINE
+     */
+    function clearHoldTimers() {
+      if (holdTimerId) {
+        clearTimeout(holdTimerId);
+        holdTimerId = null;
+      }
+      if (holdAnimFrameId) {
+        cancelAnimationFrame(holdAnimFrameId);
+        holdAnimFrameId = null;
+      }
+    }
+
+    function handleStagePointerDown(e, category) {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      if (e.target.closest('button') || e.target.closest('.spatial-dish-node')) return;
+
+      SoundEngine.init();
+      const now = performance.now();
+      state.categoryVelocities[category.id] = 0;
+      state.categorySnapTargets[category.id] = null;
+
+      state.pointer = {
+        mode: 'orbit-spin',
+        pointerId: e.pointerId,
+        dish: null,
+        dishIndex: null,
+        category,
+        startX: e.clientX,
+        startY: e.clientY,
+        lastX: e.clientX,
+        lastY: e.clientY,
+        lastMoveTime: now,
+        currentX: e.clientX,
+        currentY: e.clientY,
+        velocityRadPerSec: 0
+      };
+
+      state.spinningCategoryId = category.id;
+      updateCategoryCardStyles(category);
+    }
+
+    function handleDishPointerDown(e, dish, category, dishIndex) {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      e.stopPropagation();
+
+      SoundEngine.init();
+      refreshDropZoneBoundsCache();
+
+      const clientX = e.clientX;
+      const clientY = e.clientY;
+      const now = performance.now();
+
+      state.categoryVelocities[category.id] = 0;
+      state.categorySnapTargets[category.id] = null;
+
+      state.pointer = {
+        mode: 'dish-hold-candidate',
+        pointerId: e.pointerId,
+        dish,
+        dishIndex,
+        category,
+        startX: clientX,
+        startY: clientY,
+        lastX: clientX,
+        lastY: clientY,
+        lastMoveTime: now,
+        currentX: clientX,
+        currentY: clientY,
+        velocityRadPerSec: 0
+      };
+
+      holdStartTimestamp = now;
+
+      state.dragState = {
+        phase: 'holding',
+        dish,
+        category,
+        originX: clientX,
+        originY: clientY,
+        targetX: clientX,
+        targetY: clientY,
+        springX: clientX,
+        springY: clientY,
+        vx: 0,
+        vy: 0,
+        tiltX: 0,
+        tiltY: 0,
+        holdProgress: 6,
+        isOverCart: false
+      };
+
+      const updateHoldProgress = (timestamp) => {
+        if (state.pointer.mode !== 'dish-hold-candidate') return;
+        const elapsed = timestamp - holdStartTimestamp;
+        const pct = Math.min(100, Math.round((elapsed / HOLD_THRESHOLD_MS) * 100));
+        if (state.dragState.phase === 'holding') {
+          state.dragState.holdProgress = pct;
+        }
+        if (elapsed < HOLD_THRESHOLD_MS) {
+          holdAnimFrameId = requestAnimationFrame(updateHoldProgress);
+        }
+      };
+      holdAnimFrameId = requestAnimationFrame(updateHoldProgress);
+
+      holdTimerId = setTimeout(() => {
+        if (state.pointer.mode !== 'dish-hold-candidate') return;
+
+        state.pointer.mode = 'dish-drag';
+        closeInspectModal();
+
+        if (navigator.vibrate) navigator.vibrate(25);
+        SoundEngine.playPickupChime();
+
+        const overCart = checkPointInsideOrderAreaCached(state.pointer.currentX, state.pointer.currentY);
+        state.dragState.phase = 'dragging';
+        state.dragState.holdProgress = 100;
+        state.dragState.targetX = state.pointer.currentX;
+        state.dragState.targetY = state.pointer.currentY;
+        state.dragState.isOverCart = overCart;
+
+        prepareFloatingDragAppearance();
+        renderCartDOM();
+      }, HOLD_THRESHOLD_MS);
+    }
+
+    function prepareFloatingDragAppearance() {
+      const overlay = document.getElementById('drag-overlay');
+      const d = state.dragState;
+      if (!d.dish) return;
+
+      overlay.classList.remove('hidden');
+      const img = document.getElementById('floating-drag-img');
+      img.src = d.dish.image;
+      img.alt = d.dish.nameAr;
+
+      updateFloatingDragVisualState();
+    }
+
+    function updateFloatingDragVisualState() {
+      const d = state.dragState;
+      if (!d.dish) return;
+      const plate = document.getElementById('floating-drag-plate');
+      plate.style.background = `radial-gradient(circle at 30% 25%, #FFFFFF 0%, ${d.dish.plateTone} 75%, ${d.dish.rimColor} 100%)`;
+      plate.style.boxShadow = d.isOverCart
+        ? '0 28px 50px -8px rgba(198, 93, 59, 0.58), 0 0 0 4px #C65D3B'
+        : '0 28px 55px -10px rgba(31, 36, 31, 0.42)';
+
+      const label = document.getElementById('floating-drag-label');
+      label.textContent = d.isOverCart
+        ? 'أفلت لإضافة الطبق ✓'
+        : `${d.dish.nameAr} (${d.dish.price} ر.س)`;
+    }
+
+    window.addEventListener('pointermove', (e) => {
+      const ptr = state.pointer;
+      if (ptr.mode === 'idle') return;
+      if (ptr.pointerId !== null && e.pointerId !== ptr.pointerId) return;
+
+      const now = performance.now();
+      const dt = Math.max((now - ptr.lastMoveTime) / 1000, 0.004);
+      const dxFromStart = e.clientX - ptr.startX;
+      const dyFromStart = e.clientY - ptr.startY;
+      const distFromStart = Math.hypot(dxFromStart, dyFromStart);
+
+      const stepDx = e.clientX - ptr.lastX;
+      const stepDy = e.clientY - ptr.lastY;
+
+      ptr.currentX = e.clientX;
+      ptr.currentY = e.clientY;
+
+      // CASE 1: Early swipe (>8px before 340ms hold completes) -> Switch to Touch Orbit Spin!
+      if (ptr.mode === 'dish-hold-candidate' && distFromStart > SWIPE_CANCEL_HOLD_PX) {
+        clearHoldTimers();
+        ptr.mode = 'orbit-spin';
+        state.spinningCategoryId = ptr.category.id;
+        state.dragState.phase = 'idle';
+        state.dragState.dish = null;
+        updateCategoryCardStyles(ptr.category);
+      }
+
+      // CASE 2: Touch / Pointer Orbit Spin Mode
+      if (ptr.mode === 'orbit-spin' && ptr.category) {
+        const deltaAngle = -(stepDx * 0.022) + stepDy * 0.006;
+        const instVelocity = deltaAngle / dt;
+        ptr.velocityRadPerSec =
+          ptr.velocityRadPerSec * 0.55 + Math.max(-9.5, Math.min(9.5, instVelocity)) * 0.45;
+
+        state.categoryAngles[ptr.category.id] =
+          (state.categoryAngles[ptr.category.id] || 0) + deltaAngle;
+
+        ptr.lastX = e.clientX;
+        ptr.lastY = e.clientY;
+        ptr.lastMoveTime = now;
+        return;
+      }
+
+      // CASE 3: Active 3D Spring Hold & Drag Ordering Mode
+      if (ptr.mode === 'dish-drag') {
+        const prevOver = state.dragState.isOverCart;
+        const overCart = checkPointInsideOrderAreaCached(e.clientX, e.clientY);
+
+        state.dragState.targetX = e.clientX;
+        state.dragState.targetY = e.clientY;
+        state.dragState.isOverCart = overCart;
+
+        ptr.lastX = e.clientX;
+        ptr.lastY = e.clientY;
+        ptr.lastMoveTime = now;
+
+        if (prevOver !== overCart) {
+          if (overCart) SoundEngine.playMagneticSnap();
+          updateFloatingDragVisualState();
+          renderCartDOM();
+        }
+      }
+    }, { passive: true });
+
+    function handleGlobalPointerUp(e) {
+      const ptr = state.pointer;
+      if (ptr.mode === 'idle') return;
+      if (ptr.pointerId !== null && e.pointerId !== ptr.pointerId) return;
+
+      clearHoldTimers();
+
+      if (ptr.mode === 'dish-drag' && ptr.dish) {
+        const isValidDrop = checkPointInsideOrderAreaCached(e.clientX, e.clientY);
+        if (isValidDrop) {
+          addDishToCart(ptr.dish);
+          state.dragState.phase = 'idle';
+          state.dragState.dish = null;
+          document.getElementById('drag-overlay').classList.add('hidden');
+        } else {
+          // Smooth Spring-Back Return Flight to exact moving orbital position
+          state.dragState.phase = 'returning';
+          state.dragState.isOverCart = false;
+          updateFloatingDragVisualState();
+          triggerToast('تم إعادة الطبق إلى مداره بنعومة — اسحبه لوعاء الطلبات للإضافة', 'neutral');
+        }
+      } else if (ptr.mode === 'orbit-spin' && ptr.category) {
+        const timeSinceLastMove = performance.now() - ptr.lastMoveTime;
+        if (timeSinceLastMove < 95 && Math.abs(ptr.velocityRadPerSec) > 0.25) {
+          state.categoryVelocities[ptr.category.id] = ptr.velocityRadPerSec;
+        } else {
+          state.categoryVelocities[ptr.category.id] = 0;
+        }
+        // Schedule Soft Magnetic Front-Dish Snap
+        state.categorySnapTargets[ptr.category.id] = computeNearestFrontSnapAngle(
+          state.categoryAngles[ptr.category.id] || 0,
+          ptr.category.dishes.length
+        );
+      } else if (ptr.mode === 'dish-hold-candidate' && ptr.dish && ptr.category) {
+        state.dragState.phase = 'idle';
+        state.dragState.dish = null;
+        focusDishToFront(ptr.category, ptr.dishIndex, ptr.category.dishes.length);
+        state.tapFeedbackDishId = ptr.dish.id;
+        if (tapFeedbackTimerId) clearTimeout(tapFeedbackTimerId);
+        tapFeedbackTimerId = setTimeout(() => {
+          state.tapFeedbackDishId = null;
+        }, 1800);
+      }
+
+      const prevSpinCat = ptr.category;
+      state.pointer.mode = 'idle';
+      state.pointer.pointerId = null;
+      state.spinningCategoryId = null;
+      if (prevSpinCat) updateCategoryCardStyles(prevSpinCat);
+      renderCartDOM();
+    }
+
+    window.addEventListener('pointerup', handleGlobalPointerUp);
+    window.addEventListener('pointercancel', handleGlobalPointerUp);
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        clearHoldTimers();
+        state.pointer.mode = 'idle';
+        state.spinningCategoryId = null;
+        state.dragState.phase = 'idle';
+        document.getElementById('drag-overlay').classList.add('hidden');
+        closeInspectModal();
+        closeCheckoutModal();
+        renderCartDOM();
+      }
+    });
+
+    /**
+     * 9. CART & ORDER VESSEL MANAGEMENT
+     */
+    function addDishToCart(dish) {
+      const chosenModifier =
+        state.selectedModifiers[dish.id] || (dish.modifiers && dish.modifiers[0]) || 'تحضير كلاسيكي';
+
+      const existingIdx = state.cartItems.findIndex(
+        (item) => item.dish.id === dish.id && item.modifier === chosenModifier
+      );
+
+      if (existingIdx > -1) {
+        state.cartItems[existingIdx].quantity += 1;
+      } else {
+        state.cartItems.push({ dish, modifier: chosenModifier, quantity: 1 });
+      }
+
+      if (navigator.vibrate) navigator.vibrate([18, 40, 25]);
+      SoundEngine.playDropSuccess();
+
+      const badge = document.getElementById('desktop-cart-badge-icon');
+      if (badge) {
+        badge.classList.add('pulse-hit');
+        setTimeout(() => badge.classList.remove('pulse-hit'), 700);
+      }
+
+      renderCartDOM();
+      triggerToast(`تم إسقاط «${dish.nameAr}» في وعاء الطلبات`, 'success');
+    }
+
+    function updateCartQuantity(index, delta) {
+      if (!state.cartItems[index]) return;
+      state.cartItems[index].quantity += delta;
+      if (state.cartItems[index].quantity <= 0) {
+        state.cartItems.splice(index, 1);
+      }
+      renderCartDOM();
+    }
+
+    function removeCartItem(index) {
+      state.cartItems.splice(index, 1);
+      renderCartDOM();
+    }
+
+    function renderCartDOM() {
+      const totalCount = state.cartItems.reduce((acc, item) => acc + item.quantity, 0);
+      const subtotal = state.cartItems.reduce((acc, item) => acc + item.dish.price * item.quantity, 0);
+      const vatAmount = Math.round(subtotal * 0.15 * 100) / 100;
+      const grandTotal = Math.round((subtotal + vatAmount) * 100) / 100;
+
+      const isDragging = state.dragState.phase === 'dragging';
+      const isOverCart = state.dragState.isOverCart;
+
+      const desktopVessel = document.getElementById('desktop-cart-vessel');
+      desktopVessel.className = `desktop-vessel ${
+        isDragging ? (isOverCart ? 'drag-over-active' : 'drag-approaching') : ''
+      }`;
+
+      document.getElementById('desktop-cart-subtitle').textContent =
+        totalCount === 0
+          ? 'اسحب أي طبق وأفلته هنا'
+          : `${totalCount} ${totalCount === 1 ? 'طبق مختار' : 'أطباق مختارة'}`;
+
+      document.getElementById('desktop-drop-title').textContent = isDragging
+        ? isOverCart
+          ? `أفلت «${state.dragState.dish?.nameAr}» لإضافته الآن ✓`
+          : 'اقترب ليلتقط الوعاء المغناطيسي الطبق'
+        : 'منطقة الجذب والإسقاط المغناطيسي';
+
+      const desktopList = document.getElementById('desktop-cart-items');
+      desktopList.innerHTML = '';
+      if (state.cartItems.length === 0) {
+        desktopList.innerHTML = `
+          <div style="padding:2.2rem 0.5rem;text-align:center;opacity:0.62;font-size:0.75rem;">
+            لا توجد أطباق في طلبك بعد.<br />
+            المس أي طبق مطولاً واسحبه إلى الوعاء.
+          </div>
+        `;
+      } else {
+        state.cartItems.forEach((item, idx) => {
+          const row = document.createElement('div');
+          row.className = 'cart-item-card';
+          row.innerHTML = `
+            <img src="${item.dish.image}" alt="${item.dish.nameAr}" style="width:2.75rem;height:2.75rem;border-radius:50%;object-fit:cover;flex-shrink:0;border:1px solid var(--border-warm);" />
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:0.76rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${item.dish.nameAr}</div>
+              <div style="font-size:0.64rem;opacity:0.72;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${item.modifier}</div>
+              <div style="font-size:0.7rem;font-weight:700;color:var(--terracotta);margin-top:0.1rem;">${item.dish.price * item.quantity} ${item.dish.currency}</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:0.25rem;">
+              <button type="button" data-act="dec" class="qty-btn" aria-label="إنقاص">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg>
+              </button>
+              <span style="width:1.2rem;text-align:center;font-size:0.75rem;font-weight:700;">${item.quantity}</span>
+              <button type="button" data-act="inc" class="qty-btn" aria-label="زيادة">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              </button>
+              <button type="button" data-act="rem" class="qty-btn" style="background:transparent;color:var(--terracotta-dark);" aria-label="حذف">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+              </button>
+            </div>
+          `;
+          row.querySelector('[data-act="dec"]').addEventListener('click', () => updateCartQuantity(idx, -1));
+          row.querySelector('[data-act="inc"]').addEventListener('click', () => updateCartQuantity(idx, 1));
+          row.querySelector('[data-act="rem"]').addEventListener('click', () => removeCartItem(idx));
+          desktopList.appendChild(row);
+        });
+      }
+
+      document.getElementById('desktop-subtotal').textContent = `${subtotal.toFixed(2)} ر.س`;
+      document.getElementById('desktop-vat').textContent = `${vatAmount.toFixed(2)} ر.س`;
+      document.getElementById('desktop-grandtotal').textContent = `${grandTotal.toFixed(2)} ر.س`;
+      document.getElementById('btn-desktop-checkout').disabled = state.cartItems.length === 0;
+
+      // Mobile Dock Sync
+      const mobileInner = document.getElementById('mobile-cart-inner');
+      mobileInner.className = `mobile-dock-inner ${
+        isDragging ? (isOverCart ? 'drag-over-active' : 'drag-approaching') : ''
+      }`;
+
+      const mobileDragBanner = document.getElementById('mobile-drag-banner');
+      const mobileIdleBar = document.getElementById('mobile-idle-bar');
+
+      if (isDragging) {
+        mobileDragBanner.classList.remove('hidden');
+        mobileDragBanner.style.display = 'flex';
+        mobileIdleBar.classList.add('hidden');
+        document.getElementById('mobile-drag-banner-text').textContent = isOverCart
+          ? `أفلت «${state.dragState.dish?.nameAr}» الآن لإضافته إلى السلة!`
+          : 'اسحب الطبق إلى هذا الشريط السفلي وأفلته للطلب';
+      } else {
+        mobileDragBanner.classList.add('hidden');
+        mobileIdleBar.classList.remove('hidden');
+      }
+
+      document.getElementById('mobile-cart-count').textContent = totalCount;
+      document.getElementById('mobile-cart-summary-line').textContent =
+        `الإجمالي: ${grandTotal.toFixed(2)} ر.س • اضغط لعرض السلة`;
+      document.getElementById('btn-mobile-checkout').disabled = state.cartItems.length === 0;
+
+      const mobileDrawer = document.getElementById('mobile-cart-drawer');
+      if (state.mobileCartExpanded && !isDragging) {
+        mobileDrawer.classList.remove('hidden');
+        mobileDrawer.innerHTML = '';
+        if (state.cartItems.length === 0) {
+          mobileDrawer.innerHTML = `<p style="text-align:center;font-size:0.75rem;color:#C8C0B0;padding:1rem 0;">وعاء الطلبات فارغ.</p>`;
+        } else {
+          state.cartItems.forEach((item, idx) => {
+            const mRow = document.createElement('div');
+            mRow.style.cssText = 'display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.1);border-radius:14px;padding:0.45rem 0.6rem;font-size:0.75rem;';
+            mRow.innerHTML = `
+              <div style="display:flex;align-items:center;gap:0.5rem;">
+                <img src="${item.dish.image}" alt="${item.dish.nameAr}" style="width:2.2rem;height:2.2rem;border-radius:50%;object-fit:cover;" />
+                <div>
+                  <div style="font-weight:700;">${item.dish.nameAr}</div>
+                  <div style="font-size:0.65rem;color:#C8C0B0;">${item.dish.price * item.quantity} ر.س</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:0.35rem;">
+                <button type="button" data-m-act="dec" class="qty-btn" style="background:rgba(255,255,255,0.2);color:#fff;">-</button>
+                <span style="font-weight:700;width:1rem;text-align:center;">${item.quantity}</span>
+                <button type="button" data-m-act="inc" class="qty-btn" style="background:rgba(255,255,255,0.2);color:#fff;">+</button>
+              </div>
+            `;
+            mRow.querySelector('[data-m-act="dec"]').addEventListener('click', () => updateCartQuantity(idx, -1));
+            mRow.querySelector('[data-m-act="inc"]').addEventListener('click', () => updateCartQuantity(idx, 1));
+            mobileDrawer.appendChild(mRow);
+          });
+        }
+      } else {
+        mobileDrawer.classList.add('hidden');
+      }
+    }
+
+    /**
+     * 10. MODALS, TOAST & HEADER CONTROLS
+     */
+    function triggerToast(message) {
+      const container = document.getElementById('toast-container');
+      const text = document.getElementById('toast-text');
+      text.textContent = message;
+      container.classList.remove('hidden');
+      if (toastTimerId) clearTimeout(toastTimerId);
+      toastTimerId = setTimeout(() => {
+        container.classList.add('hidden');
+      }, 3000);
+    }
+
+    function openInspectModal(dish) {
+      state.inspectedDish = dish;
+      const backdrop = document.getElementById('inspect-modal-backdrop');
+      document.getElementById('inspect-plate').style.background = `radial-gradient(circle, #fff, ${dish.plateTone})`;
+      document.getElementById('inspect-img').src = dish.image;
+      document.getElementById('inspect-img').alt = dish.nameAr;
+      document.getElementById('inspect-title').textContent = dish.nameAr;
+      document.getElementById('inspect-price').textContent = `${dish.price} ${dish.currency} `;
+      document.getElementById('inspect-meta').textContent = `• ${dish.calories} • ${dish.prepTime}`;
+      document.getElementById('inspect-desc').textContent = dish.descriptionAr;
+
+      const dietaryEl = document.getElementById('inspect-dietary');
+      dietaryEl.innerHTML = '';
+      (dish.dietary || []).forEach((tag) => {
+        const span = document.createElement('span');
+        span.style.cssText = 'padding:0.15rem 0.55rem;border-radius:999px;background:rgba(61,74,58,0.1);color:var(--botanical-olive);font-size:0.64rem;font-weight:600;';
+        span.textContent = tag;
+        dietaryEl.appendChild(span);
+      });
+
+      const renderModifiers = () => {
+        const modContainer = document.getElementById('inspect-modifiers');
+        modContainer.innerHTML = '';
+        const currentMod = state.selectedModifiers[dish.id] || dish.modifiers[0];
+        (dish.modifiers || []).forEach((mod) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          const active = currentMod === mod;
+          btn.className = `pill-btn ${active ? 'active-dark' : ''}`;
+          btn.textContent = mod;
+          btn.addEventListener('click', () => {
+            state.selectedModifiers[dish.id] = mod;
+            renderModifiers();
+          });
+          modContainer.appendChild(btn);
+        });
+      };
+      renderModifiers();
+
+      backdrop.classList.remove('hidden');
+    }
+
+    function closeInspectModal() {
+      state.inspectedDish = null;
+      document.getElementById('inspect-modal-backdrop').classList.add('hidden');
+    }
+
+    function openCheckoutModal() {
+      if (state.cartItems.length === 0) return;
+      const backdrop = document.getElementById('checkout-modal-backdrop');
+      const list = document.getElementById('checkout-items-list');
+      list.innerHTML = '';
+
+      const subtotal = state.cartItems.reduce((acc, item) => acc + item.dish.price * item.quantity, 0);
+      const vatAmount = Math.round(subtotal * 0.15 * 100) / 100;
+      const grandTotal = Math.round((subtotal + vatAmount) * 100) / 100;
+
+      state.cartItems.forEach((item) => {
+        const div = document.createElement('div');
+        div.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:0.35rem 0;border-bottom:1px solid rgba(220,213,199,0.6);';
+        div.innerHTML = `
+          <div><strong>${item.dish.nameAr}</strong> <span style="color:#6E6A61;">(${item.modifier})</span> × ${item.quantity}</div>
+          <div style="font-weight:700;">${item.dish.price * item.quantity} ${item.dish.currency}</div>
+        `;
+        list.appendChild(div);
+      });
+
+      const totalRow = document.createElement('div');
+      totalRow.style.cssText = 'padding-top:0.55rem;display:flex;justify-content:space-between;font-weight:700;font-size:0.88rem;color:var(--terracotta);';
+      totalRow.innerHTML = `<span>الإجمالي شامل الضريبة</span><span>${grandTotal.toFixed(2)} ر.س</span>`;
+      list.appendChild(totalRow);
+
+      backdrop.classList.remove('hidden');
+    }
+
+    function closeCheckoutModal() {
+      document.getElementById('checkout-modal-backdrop').classList.add('hidden');
+    }
+
+    function syncHeaderControlsUI() {
+      const soundBtn = document.getElementById('btn-sound-toggle');
+      const soundLabel = document.getElementById('label-sound-state');
+      if (SoundEngine.enabled) {
+        soundBtn.className = 'pill-btn active-dark';
+        soundLabel.textContent = 'الصوت اللمسي: مفعل';
+      } else {
+        soundBtn.className = 'pill-btn';
+        soundLabel.textContent = 'الصوت اللمسي: مكتوم';
+      }
+
+      const motionBtn = document.getElementById('btn-motion-toggle');
+      const motionLabel = document.getElementById('label-motion-state');
+      if (state.isMotionPaused) {
+        motionBtn.className = 'pill-btn active-terracotta';
+        motionLabel.textContent = 'تحريك المدارات';
+      } else {
+        motionBtn.className = 'pill-btn';
+        motionLabel.textContent = 'تهدئة الحركة';
+      }
+
+      const calBtn = document.getElementById('btn-calibration-toggle');
+      const calDrawer = document.getElementById('calibration-drawer');
+      if (state.showCalibration) {
+        calBtn.className = 'pill-btn active-dark';
+        calDrawer.classList.remove('hidden');
+      } else {
+        calBtn.className = 'pill-btn';
+        calDrawer.classList.add('hidden');
+      }
+    }
+
+    /**
+     * 11. INITIALIZE APPLICATION
+     */
+    window.addEventListener('DOMContentLoaded', () => {
+      buildCategoriesDOM();
+      renderAllCategoryOrbits(true);
+      renderCartDOM();
+      syncHeaderControlsUI();
+      refreshDropZoneBoundsCache();
+
+      document.getElementById('btn-sound-toggle').addEventListener('click', () => {
+        SoundEngine.enabled = !SoundEngine.enabled;
+        if (SoundEngine.enabled) SoundEngine.playOrbitTick();
+        syncHeaderControlsUI();
+      });
+
+      document.getElementById('btn-motion-toggle').addEventListener('click', () => {
+        state.isMotionPaused = !state.isMotionPaused;
+        syncHeaderControlsUI();
+      });
+
+      document.getElementById('btn-calibration-toggle').addEventListener('click', () => {
+        state.showCalibration = !state.showCalibration;
+        syncHeaderControlsUI();
+        refreshDropZoneBoundsCache();
+      });
+
+      const orbitInput = document.getElementById('input-orbit-scale');
+      const speedInput = document.getElementById('input-speed-scale');
+
+      orbitInput.addEventListener('input', (e) => {
+        state.orbitScale = parseFloat(e.target.value);
+        document.getElementById('val-orbit-scale').textContent = `${Math.round(state.orbitScale * 42)}px`;
+        MENU_CATEGORIES.forEach((cat) => {
+          const cache = domCache.categories[cat.id];
+          if (!cache) return;
+          const rx = cat.orbitRadiusX * state.orbitScale;
+          const ry = cat.orbitRadiusY * state.orbitScale;
+          cache.ellipseOuter.setAttribute('rx', Math.min(76, rx + 22));
+          cache.ellipseOuter.setAttribute('ry', Math.min(44, ry + 12));
+          cache.ellipseInner.setAttribute('rx', Math.min(54, rx));
+          cache.ellipseInner.setAttribute('ry', Math.min(30, ry));
+        });
+        renderAllCategoryOrbits(true);
+      });
+
+      speedInput.addEventListener('input', (e) => {
+        state.speedScale = parseFloat(e.target.value);
+        document.getElementById('val-speed-scale').textContent = `${state.speedScale.toFixed(1)}x`;
+      });
+
+      document.getElementById('btn-reset-calibration').addEventListener('click', () => {
+        state.orbitScale = 1.0;
+        state.speedScale = 1.0;
+        orbitInput.value = '1.0';
+        speedInput.value = '1.0';
+        document.getElementById('val-orbit-scale').textContent = '42px';
+        document.getElementById('val-speed-scale').textContent = '1.0x';
+        renderAllCategoryOrbits(true);
+      });
+
+      document.getElementById('btn-mobile-expand').addEventListener('click', () => {
+        state.mobileCartExpanded = !state.mobileCartExpanded;
+        renderCartDOM();
+        refreshDropZoneBoundsCache();
+      });
+
+      document.getElementById('btn-desktop-checkout').addEventListener('click', openCheckoutModal);
+      document.getElementById('btn-mobile-checkout').addEventListener('click', openCheckoutModal);
+
+      document.getElementById('inspect-modal-backdrop').addEventListener('click', closeInspectModal);
+      document.getElementById('inspect-modal-card').addEventListener('click', (e) => e.stopPropagation());
+      document.getElementById('btn-close-inspect').addEventListener('click', closeInspectModal);
+      document.getElementById('btn-ok-inspect').addEventListener('click', closeInspectModal);
+
+      document.getElementById('checkout-modal-backdrop').addEventListener('click', closeCheckoutModal);
+      document.getElementById('checkout-modal-card').addEventListener('click', (e) => e.stopPropagation());
+      document.getElementById('btn-close-checkout').addEventListener('click', closeCheckoutModal);
+      document.getElementById('btn-return-menu').addEventListener('click', closeCheckoutModal);
+      document.getElementById('btn-clear-cart').addEventListener('click', () => {
+        state.cartItems = [];
+        closeCheckoutModal();
+        renderCartDOM();
+        triggerToast('تم تفريغ وعاء الطلبات لبدء تجربة جديدة');
+      });
+
+      requestAnimationFrame(masterPhysicsLoop);
+    });
+  </script>
+</body>
+</html>
